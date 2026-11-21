@@ -1,0 +1,35 @@
+local_id: tideflow-agent
+name: TideFlow Hexactine Agent
+source:
+  kind: codebase
+  tracks:
+    - backend/app/services/momentum_engine.py
+    - backend/app/services/scheduler.py
+    - backend/app/services/nemoclaw_retriever.py
+  subtree_digest: "sha256:tideflow-hexactine-m3"
+interface:
+  transport: http
+  entry: "http://127.0.0.1:8010/api/v1"
+  intake: structured
+  accepts:
+    - application/json
+  produces: application/json
+calls:
+  - to: schedule_prompts
+    kind: tool
+    write: false
+  - to: schedule_blocks
+    kind: tool
+    write: true
+  - to: retriever_execute
+    kind: tool
+    write: true
+  - to: retriever_permissions
+    kind: tool
+    write: false
+guardrails:
+  - "All Nemoclaw capabilities default to false at startup."
+  - "Block path traversal, sensitive paths (.env, .git, .testmuai/evidence), file:// schemes, and private/metadata SSRF IPs with HTTP 403 and DENIED audit entry."
+  - "Enforce Hexactine degree <= 6 invariant on Project, SpiculeHub, and ConceptTag nodes."
+approval_gates:
+  - "PUT /api/v1/retriever/permissions requires explicit operator toggle before POST /api/v1/retriever/execute succeeds."

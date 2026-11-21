@@ -1,0 +1,40 @@
+id: local-api
+name: local-api
+kind: rest
+target:
+  domain: 127.0.0.1:8010
+  endpoint: "http://127.0.0.1:8010/api/v1"
+  auth: none
+hooks:
+  prepare:
+    script: scripts/tideflow_hooks.mjs
+    mode: rest
+    timeout_seconds: 120
+    delay_seconds: 0
+  open:
+    script: scripts/tideflow_hooks.mjs
+    mode: rest
+    timeout_seconds: 120
+    delay_seconds: 0
+  execute:
+    script: scripts/tideflow_hooks.mjs
+    mode: rest
+    timeout_seconds: 600
+    delay_seconds: 0
+  close:
+    script: scripts/tideflow_hooks.mjs
+    mode: rest
+    timeout_seconds: 120
+    delay_seconds: 0
+  collect:
+    script: scripts/tideflow_hooks.mjs
+    mode: rest
+    timeout_seconds: 600
+    delay_seconds: 0
+env:
+  - variable: TIDEFLOW_API_URL
+    purpose: Base URL for TideFlow Hexactine FastAPI service (defaults to http://127.0.0.1:8010/api/v1).
+capabilities:
+  multi_turn: false
+  calls: true
+  usage: true

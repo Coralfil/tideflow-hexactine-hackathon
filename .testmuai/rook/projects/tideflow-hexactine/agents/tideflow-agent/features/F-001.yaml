@@ -1,0 +1,7 @@
+id: F-001
+name: Default-Deny Nemoclaw Retriever and Deterministic Cadence Scheduler
+description: Verifies default-deny capability gating, SSRF/path traversal blocking, audit logging, and deterministic tidal cadence prompts.
+requirements:
+  - "GET /api/v1/retriever/permissions starts with all four capabilities set to false."
+  - "POST /api/v1/retriever/execute returns HTTP 403 and logs DENIED when disabled or targeting restricted paths/IPs."
+  - "GET /api/v1/schedule/prompts returns identical deterministic output for fixed (now_iso, energy, minutes)."

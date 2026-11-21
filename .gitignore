@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.pytest_tmp/
+
+# Node & Frontend
+node_modules/
+dist/
+coverage/
+tsconfig.tsbuildinfo
+
+# Relate / Local Data & WAL
+*.rl
+*.rl-wal
+*.rl-shm
+*.db
+*.db-wal
+*.db-shm
+
+# TestMu AI (KaneCLI & Rook)
+# Keep .testmuai/tests/*_test.md, output-*/, and .testmuai/rook/ profiles/scripts
+.testmuai/evidence/
+.testmuai/variables/
+.testmuai/rook/**/runs/
+playwright-report/
+test-results/
+
+# Environment & Secrets
+.env
+.env.local
+*.env.*
+secrets/
+*.pem
+*accessKeys*.csv
+service_account*.json
+*credentials*.json
+!**/example*.json
+
+# Editors, Logs, OS
+.vscode/
+.idea/
+*.log
+*.tmp
+.DS_Store
+Thumbs.db

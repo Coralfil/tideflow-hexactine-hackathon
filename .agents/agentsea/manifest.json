@@ -1,0 +1,51 @@
+{
+  "name": "tideflow-agentsea-bridge",
+  "version": "1.0.0",
+  "read_only": true,
+  "source_paths": {
+    "atlantis_agent_sea": "D:\\Projects\\os\\AtlantisAgentSea",
+    "agent_sea_command": "D:\\Projects\\os\\atlantis_cli\\atlantis_cli\\commands\\agent_sea.py",
+    "hexactine_lattice_core": "D:\\Projects\\os\\atlantis_cli\\atlantis_cli\\core\\hexactine_lattice.py",
+    "helix_memory": "D:\\Projects\\os\\helix_memory",
+    "helix_schema": "D:\\Projects\\os\\helix_memory\\schema.cypher"
+  },
+  "oceanic_divisions": [
+    "surface",
+    "mesopelagic",
+    "bathypelagic",
+    "abyssopelagic",
+    "hadal"
+  ],
+  "helicinid_to_hexactine_rays": {
+    "1_INTAKE_AND_CLASSIFICATION": "+z (FUSES_CONSTANTS)",
+    "2_SQUAD_FORMATION": "+x (CORROBORATES)",
+    "3_EPISTEMIC_GATING": "-x (CONTRADICTS)",
+    "4_MULTI_AGENT_EXECUTION": "-y (DEMOTES)",
+    "5_CONFLICT_RESOLUTION": "+y (PROMOTES)",
+    "6_OUTPUT_VERIFICATION_AND_PERSISTENCE": "-z (ANNOTATES_AUDIT)"
+  },
+  "hexactine_invariants": {
+    "degree_invariant_max": 6,
+    "promotion_threshold": 0.75
+  },
+  "helix_memory_contract": {
+    "database_path": "./data/tideflow_memory.rl",
+    "fact_kinds": [
+      "observation",
+      "research",
+      "decision",
+      "correction",
+      "preference"
+    ],
+    "embedding_dim": 384,
+    "similarity": "cosine",
+    "relate_exit_codes": {
+      "0": "success",
+      "1": "runtime_failure",
+      "2": "usage_error",
+      "5": "conflict_locked",
+      "6": "statement_rejected",
+      "7": "timeout"
+    }
+  }
+}

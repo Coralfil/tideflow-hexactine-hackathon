@@ -1,0 +1,26 @@
+{
+  "schema_version": "2026-11-16-HEXACTINE-GDS-V3-SE3",
+  "project": "TideFlow Hexactine (KaneCLI Online Hackathon Edition)",
+  "sync_timestamp_utc": "2026-11-21T02:48:00Z",
+  "hsl_bridge_read_only": true,
+  "hsl_root": "D:\\Projects\\os\\Atlantis_HSL",
+  "hexactine_invariant": {
+    "max_degree_allowed": 6,
+    "verified_under_burst": true,
+    "subhub_overflow_label": "ConceptTag"
+  },
+  "workspace_deliverables": {
+    "backend_api": "http://127.0.0.1:8010/api/v1",
+    "frontend_ui": "http://127.0.0.1:5173",
+    "relate_store": "data/tideflow_memory.rl",
+    "deepcoder_cli_updated": true,
+    "rook_hooks_dir": ".testmuai/rook",
+    "kanecli_tests_dir": ".testmuai/tests",
+    "compliance_checklist": "COMPLIANCE_CHECKLIST.md"
+  },
+  "test_suites": {
+    "backend_unit_integration": 74,
+    "tier5_adversarial": 9,
+    "e2e_opaque_box_total": 141
+  }
+}

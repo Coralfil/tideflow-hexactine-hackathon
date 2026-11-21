@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "tideflow-memory": {
+      "command": "relate",
+      "args": [
+        "serve",
+        "--mcp",
+        "stdio",
+        "--database",
+        "./data/tideflow_memory.rl",
+        "--read-only"
+      ]
+    }
+  }
+}

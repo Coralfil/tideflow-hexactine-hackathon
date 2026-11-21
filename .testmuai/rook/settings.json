@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "selections": {
+    "prod": {
+      "project_id": "tideflow-hexactine",
+      "env": "prod"
+    }
+  }
+}

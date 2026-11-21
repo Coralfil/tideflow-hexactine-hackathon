@@ -1,0 +1,7 @@
+id: SC-001
+feature_id: F-001
+name: Verify default-deny retriever gate and deterministic cadence prompts
+goal: "Verify GET /api/v1/retriever/permissions defaults to false, disabled execute returns 403 DENIED, and GET /api/v1/schedule/prompts is deterministic."
+expected:
+  - "Permission gate blocks disabled execution with HTTP 403 and DENIED audit record."
+  - "Scheduler prompts remain deterministic across repeated queries."

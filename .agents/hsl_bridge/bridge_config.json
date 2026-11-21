@@ -1,0 +1,24 @@
+{
+  "read_only": true,
+  "hsl_root": "D:\\Projects\\os\\Atlantis_HSL",
+  "hexactine_state_path": "D:\\Projects\\os\\Atlantis_HSL\\HEXACTINE-GRAPH\\hexactine_lattice_state.json",
+  "skills_taxonomy_cypher": "D:\\Projects\\os\\Atlantis_HSL\\HEXACTINE-GRAPH\\agentsea_skills_taxonomy.cyp",
+  "expected_schema_version": "2026-11-16-HEXACTINE-GDS-V3-SE3",
+  "degree_invariant_max": 6,
+  "local_worker": {
+    "root": "D:\\coralfil-os-worker",
+    "daemon_script": "D:\\coralfil-os-worker\\local_worker\\wave1_worker_daemon.py",
+    "inference_config": "D:\\coralfil-os-worker\\configs\\llm_inference_config.yaml",
+    "hardware": "NVIDIA RTX 3060 12GB",
+    "endpoints": {
+      "chat_obelisk_local": "http://127.0.0.1:8000/v1",
+      "embeddings_minilm_384": "http://127.0.0.1:8001/embeddings",
+      "rerank_bge": "http://127.0.0.1:8001/rerank",
+      "glyph_router": "http://127.0.0.1:8003/v1/glyph",
+      "science_verify": "http://127.0.0.1:8004/verify_physics",
+      "a10_gateway_proxy": "http://127.0.0.1:8080/v1",
+      "health_check": "/health"
+    },
+    "fallback_behavior": "Fail closed to deterministic local logic if worker daemon is offline"
+  }
+}
