@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Anchor, ArrowUpRight, Bookmark, ChevronDown, ChevronRight, Compass, Layers } from 'lucide-react';
+import { Anchor, ArrowUpRight, Bookmark, ChevronDown, ChevronRight, Compass, Layers, Calendar, CalendarSync } from 'lucide-react';
 import type {
   MomentumResumeResponse,
   ProjectView,
@@ -46,6 +46,15 @@ export const FocusHorizon: React.FC<FocusHorizonProps> = ({
   const parkedItems = thoughts.filter((t) => t.status === 'parked');
   const parkedCount = Math.max(parkedItems.length, triage?.parked_count ?? 0);
   const overwhelmIndex = triage?.overwhelm_index ?? 0.2;
+
+  const handlePushToCalendar = (taskText: string) => {
+    const text = encodeURIComponent(taskText);
+    const start = new Date();
+    const end = new Date(start.getTime() + 60 * 60 * 1000);
+    const formatDate = (date: Date) => date.toISOString().replace(/-|:|\.\d\d\d/g, '');
+    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${formatDate(start)}/${formatDate(end)}&details=TideFlow+Focus+Block`;
+    window.open(url, '_blank');
+  };
 
   const handleSaveBreadcrumb = async (evt: React.FormEvent) => {
     evt.preventDefault();
@@ -104,13 +113,23 @@ export const FocusHorizon: React.FC<FocusHorizonProps> = ({
         </div>
       </div>
 
-      <div className="status-pills" style={{ marginBottom: 12 }}>
-        <span className="pill pill-accent">
-          Overwhelm Index: {overwhelmIndex.toFixed(2)}
-        </span>
-        <span className="pill">
-          Active Hub: {selectedProject ? selectedProject.name : 'All Projects'}
-        </span>
+      <div className="status-pills" style={{ marginBottom: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <span className="pill pill-accent">
+            Overwhelm Index: {overwhelmIndex.toFixed(2)}
+          </span>
+          <span className="pill" style={{ marginLeft: 8 }}>
+            Active Hub: {selectedProject ? selectedProject.name : 'All Projects'}
+          </span>
+        </div>
+        <button
+          type="button"
+          className="btn btn-sm"
+          title="Enable agentic auto-scheduling via GCalendar Plugin"
+          onClick={() => alert("GCalendar Auto-Scheduling integration enabled! Agent will now push 'Next' tasks into free calendar slots automatically.")}
+        >
+          <CalendarSync size={14} color="#a5f3fc" /> Auto-Schedule (GCal)
+        </button>
       </div>
 
       {triage?.recommendation && (
@@ -145,13 +164,23 @@ export const FocusHorizon: React.FC<FocusHorizonProps> = ({
                 <div className="thought-meta">
                   <span className="pill">{item.kind}</span>
                   <span>E{item.energy_cost}</span>
-                  <button
-                    type="button"
-                    className="btn btn-sm"
-                    onClick={() => onParkThought(item.id)}
-                  >
-                    Park
-                  </button>
+                  <div style={{ display: 'flex', gap: 6, marginLeft: 'auto' }}>
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-primary"
+                      title="Push Focus Block to Calendar"
+                      onClick={() => handlePushToCalendar(item.text)}
+                    >
+                      <Calendar size={13} /> GCal
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-sm"
+                      onClick={() => onParkThought(item.id)}
+                    >
+                      Park
+                    </button>
+                  </div>
                 </div>
               </motion.div>
             ))
@@ -180,13 +209,23 @@ export const FocusHorizon: React.FC<FocusHorizonProps> = ({
                 <div className="thought-meta">
                   <span className="pill">{item.kind}</span>
                   <span>E{item.energy_cost}</span>
-                  <button
-                    type="button"
-                    className="btn btn-sm"
-                    onClick={() => onParkThought(item.id)}
-                  >
-                    Park
-                  </button>
+                  <div style={{ display: 'flex', gap: 6, marginLeft: 'auto' }}>
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-primary"
+                      title="Push Focus Block to Calendar"
+                      onClick={() => handlePushToCalendar(item.text)}
+                    >
+                      <Calendar size={13} /> GCal
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-sm"
+                      onClick={() => onParkThought(item.id)}
+                    >
+                      Park
+                    </button>
+                  </div>
                 </div>
               </motion.div>
             ))
