@@ -4,6 +4,9 @@ from __future__ import annotations
 
 import importlib
 import importlib.util
+import subprocess
+import threading
+from pathlib import Path
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 from typing import AsyncIterator, Callable
@@ -16,7 +19,7 @@ from app.graph.backend import GraphBackend, create_graph_backend
 from app.graph.hsl_bridge import HSLBridge
 from app.graph.science import GraphScienceService
 from app.models.schemas import ProjectCreateRequest
-from app.routers import graph, health, momentum, projects, thoughts
+from app.routers import graph, health, momentum, projects, thoughts, agent
 from app.services.local_worker_client import LocalWorkerClient
 from app.services.momentum_engine import MomentumEngine
 
@@ -58,6 +61,22 @@ def create_app(
 
     @asynccontextmanager
     async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
+        # Background Bootstrap for Orchestral Agent Theatre
+        def run_bootstrap():
+            bootstrap_script = Path(__file__).resolve().parent.parent / "scripts" / "agent_bootstrap.ps1"
+            if bootstrap_script.exists():
+                try:
+                    subprocess.run(
+                        ["powershell.exe", "-ExecutionPolicy", "Bypass", "-File", str(bootstrap_script)],
+                        check=True,
+                        capture_output=True,
+                        text=True
+                    )
+                except Exception as e:
+                    print(f"[Bootstrap] Failed: {e}")
+
+        threading.Thread(target=run_bootstrap, daemon=True).start()
+
         if cfg.seed_default_project and not engine.list_projects():
             engine.create_project(
                 ProjectCreateRequest(
@@ -98,6 +117,7 @@ def create_app(
     app.include_router(health.router, prefix=cfg.api_prefix)
     app.include_router(projects.router, prefix=cfg.api_prefix)
     app.include_router(thoughts.router, prefix=cfg.api_prefix)
+    app.include_router(agent.router, prefix=cfg.api_prefix)
     app.include_router(momentum.router, prefix=cfg.api_prefix)
     app.include_router(graph.router, prefix=cfg.api_prefix)
 

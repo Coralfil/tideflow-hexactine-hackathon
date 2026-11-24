@@ -1,0 +1,255 @@
+/* ==========================================================================
+   Manga Manual Theme Stylesheet (AgentSea & Coralfil OS)
+   Authentic Japanese comic / manga book aesthetics:
+   - High-contrast neo-brutalist ink borders (heavy black strokes)
+   - Offset hard box shadows (no blur, pure ink offset)
+   - Screentone and halftone dot matrices (traditional manga raster print)
+   - Speed lines, action bursts, dialogue bubbles, and sound effect accents
+   ========================================================================== */
+
+/* Manga Paper & Page Tone */
+:root {
+  --manga-paper: #f4f1ea;
+  --manga-paper-dark: #e8e3d5;
+  --manga-ink: #111111;
+  --manga-screentone-dot: rgba(17, 17, 17, 0.22);
+  --manga-screentone-dense: rgba(17, 17, 17, 0.45);
+  --manga-accent-cyan: #00d9c0;
+  --manga-accent-amber: #f59e0b;
+  --manga-accent-rose: #f43f5e;
+}
+
+/* Page Frame */
+.manga-page-frame {
+  background-color: var(--manga-paper);
+  color: var(--manga-ink);
+  border: 4px solid var(--manga-ink);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 12px 12px 0px 0px var(--manga-ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Hard Offset Manga Box Shadows */
+.manga-panel {
+  background-color: #ffffff;
+  border: 4px solid var(--manga-ink);
+  box-shadow: 6px 6px 0px 0px var(--manga-ink);
+  transition: transform 0.18s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.18s cubic-bezier(0.2, 0, 0, 1);
+  position: relative;
+}
+
+.manga-panel:hover {
+  box-shadow: 10px 10px 0px 0px var(--manga-ink);
+  transform: translate(-2px, -2px);
+}
+
+.manga-panel-hero {
+  background-color: #ffffff;
+  border: 4px solid var(--manga-ink);
+  box-shadow: 8px 8px 0px 0px var(--manga-ink);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.manga-panel-hero:hover {
+  box-shadow: 12px 12px 0px 0px var(--manga-ink);
+  transform: translate(-3px, -3px);
+}
+
+.manga-shadow-sm {
+  box-shadow: 3px 3px 0px 0px var(--manga-ink);
+}
+
+.manga-shadow-md {
+  box-shadow: 6px 6px 0px 0px var(--manga-ink);
+}
+
+.manga-shadow-lg {
+  box-shadow: 10px 10px 0px 0px var(--manga-ink);
+}
+
+.manga-shadow-inset {
+  box-shadow: inset 4px 4px 0px 0px rgba(0, 0, 0, 0.15);
+}
+
+/* Screentone Dot Matrices */
+.screentone-bg {
+  background-image: radial-gradient(var(--manga-ink) 1px, transparent 1px);
+  background-size: 8px 8px;
+}
+
+.screentone-dense {
+  background-image: radial-gradient(var(--manga-ink) 1.2px, transparent 1.2px);
+  background-size: 5px 5px;
+}
+
+.screentone-light {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.18) 1px, transparent 1px);
+  background-size: 10px 10px;
+}
+
+.screentone-cyan {
+  background-image: radial-gradient(var(--manga-accent-cyan) 1.2px, transparent 1.2px);
+  background-size: 6px 6px;
+}
+
+/* Manga Speed Lines & Crosshatching */
+.screentone-lines {
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.08),
+    rgba(0, 0, 0, 0.08) 2px,
+    transparent 2px,
+    transparent 6px
+  );
+}
+
+.screentone-speed {
+  background: repeating-radial-gradient(
+    circle at center,
+    transparent,
+    transparent 15px,
+    rgba(0, 0, 0, 0.06) 16px,
+    transparent 17px
+  );
+}
+
+/* Halftone Texture Overlay */
+.manga-halftone-overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0.08;
+  pointer-events: none;
+  background-image: radial-gradient(#000 1.5px, transparent 1.5px);
+  background-size: 6px 6px;
+  mix-blend-mode: multiply;
+  z-index: 1;
+}
+
+/* Dialogue Speech Bubbles */
+.manga-speech-bubble {
+  position: relative;
+  background: #ffffff;
+  border: 3px solid var(--manga-ink);
+  border-radius: 18px;
+  padding: 12px 16px;
+  box-shadow: 4px 4px 0px 0px var(--manga-ink);
+  font-weight: 600;
+}
+
+.manga-speech-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  left: 24px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 2px solid transparent;
+  border-top: 12px solid var(--manga-ink);
+}
+
+.manga-speech-bubble::before {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 26px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 1px solid transparent;
+  border-top: 9px solid #ffffff;
+  z-index: 1;
+}
+
+/* Shouting / Impact Bubble */
+.manga-shout-bubble {
+  position: relative;
+  background: #ffffff;
+  border: 4px solid var(--manga-ink);
+  padding: 14px 18px;
+  box-shadow: 6px 6px 0px 0px var(--manga-ink);
+  clip-path: polygon(
+    0% 12%, 8% 0%, 25% 10%, 45% 0%, 65% 12%, 85% 2%, 100% 18%,
+    92% 40%, 100% 62%, 90% 85%, 100% 100%, 75% 92%, 52% 100%,
+    30% 90%, 10% 100%, 0% 80%, 8% 50%, 0% 28%
+  );
+}
+
+/* Comic Sound FX Typography */
+.manga-sound-fx {
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -0.05em;
+  color: var(--manga-ink);
+  text-shadow: 2px 2px 0px #ffffff, 4px 4px 0px var(--manga-ink);
+  user-select: none;
+}
+
+/* Header & Banner Ribbons */
+.manga-banner {
+  background: var(--manga-ink);
+  color: #ffffff;
+  padding: 4px 12px;
+  display: inline-block;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transform: skewX(-10deg);
+  box-shadow: 3px 3px 0px 0px rgba(0, 0, 0, 0.4);
+}
+
+.manga-banner-sub {
+  background: #ffffff;
+  color: var(--manga-ink);
+  border: 2px solid var(--manga-ink);
+  padding: 2px 8px;
+  display: inline-block;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transform: skewX(-8deg);
+  box-shadow: 2px 2px 0px 0px var(--manga-ink);
+}
+
+/* Hatching Progress Bar */
+.manga-progress-track {
+  background: #ffffff;
+  border: 2px solid var(--manga-ink);
+  height: 16px;
+  overflow: hidden;
+  box-shadow: 2px 2px 0px 0px var(--manga-ink);
+  position: relative;
+}
+
+.manga-progress-fill {
+  height: 100%;
+  background: var(--manga-ink);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 4px,
+    rgba(255, 255, 255, 0.25) 4px,
+    rgba(255, 255, 255, 0.25) 8px
+  );
+  transition: width 0.4s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* 3D Glass Sponge Lattice Container */
+.hexactine-graph-container {
+  background: #ffffff;
+  border: 3px solid var(--manga-ink);
+  box-shadow: 5px 5px 0px 0px var(--manga-ink);
+  position: relative;
+  overflow: hidden;
+}
+
+.hexactine-graph-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.12) 1px, transparent 1px);
+  background-size: 8px 8px;
+  pointer-events: none;
+}
