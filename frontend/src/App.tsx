@@ -447,6 +447,17 @@ export const App: React.FC = () => {
           }
         }}
       />
+
+      {/* Floating Action Widget (Global Brain Dump) */}
+      <button
+        type="button"
+        className="floating-action-widget"
+        onClick={() => setBrainDumpOpen(true)}
+        title="Quick Capture / Brain Dump (Ctrl+K)"
+        aria-label="Quick Capture Brain Dump"
+      >
+        <Plus size={28} />
+      </button>
     </div>
   );
 };

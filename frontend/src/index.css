@@ -1,0 +1,4 @@
+
+.floating-action-widget { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #00d9c0 0%, #0284c7 100%); color: #0f172a; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0, 217, 192, 0.4); cursor: pointer; transition: all 0.2s ease; z-index: 9999; border: none; outline: none; }
+.floating-action-widget:hover { transform: translateY(-4px) scale(1.05); box-shadow: 0 6px 25px rgba(0, 217, 192, 0.6); }
+.floating-action-widget:active { transform: translateY(0) scale(0.95); }
