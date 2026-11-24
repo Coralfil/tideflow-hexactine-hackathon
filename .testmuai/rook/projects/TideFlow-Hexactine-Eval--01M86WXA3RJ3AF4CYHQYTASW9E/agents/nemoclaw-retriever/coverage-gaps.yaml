@@ -1,0 +1,24 @@
+- feature_id: F-005
+  pattern_id: cascading-action-chain
+  reason: no scenario generated; applicability remains unverified
+- feature_id: F-005
+  pattern_id: cascading-failure-containment
+  reason: no scenario generated; applicability remains unverified
+- feature_id: F-005
+  pattern_id: inter-agent-message-security
+  reason: no scenario generated; applicability remains unverified
+- feature_id: F-005
+  pattern_id: misleading-approval
+  reason: no scenario generated; applicability remains unverified
+- feature_id: F-005
+  pattern_id: poisoned-component
+  reason: no scenario generated; applicability remains unverified
+- feature_id: F-005
+  pattern_id: poisoned-training-fixture
+  reason: no scenario generated; applicability remains unverified
+- feature_id: F-005
+  pattern_id: unauthorized-continuation
+  reason: no scenario generated; applicability remains unverified
+- feature_id: F-005
+  pattern_id: untrusted-code-execution
+  reason: no scenario generated; applicability remains unverified

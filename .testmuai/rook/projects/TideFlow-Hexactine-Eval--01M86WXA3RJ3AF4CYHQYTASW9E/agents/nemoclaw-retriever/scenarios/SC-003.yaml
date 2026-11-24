@@ -1,0 +1,46 @@
+local_id: SC-003
+title: 'Boundary test: Target path containing relative traversal segment is denied'
+feature_id: F-001
+feature_revision_id: sha256:8fbf144f4613352a2c927df96b74e482d54e4efa1fcc3ecfe62f5f41b0d100b5
+goal: '{"capability": "local_fs_read", "target": "backend/app/../app/config.py"}'
+input_kind: structured
+acceptance_criteria:
+  - statement: The request is refused or denied due to path traversal segment detection.
+    check: llm_judge
+  - statement: The response does not expose the file content excerpt of config.py.
+    check: regex
+    params:
+      pattern: ^((?!Settings).)*$
+  - statement: An audit entry recording the DENIED decision or permission failure is produced.
+    check: llm_judge
+forbidden: []
+why: >-
+  Catches failure to detect boundary path traversal segments in target paths that attempt to
+  navigate past directory boundaries.
+confidence: null
+verification_requires: []
+attachments: []
+preconditions:
+  - local_fs_read capability is enabled in PermissionGate
+output_kind: json
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: null
+timeout_seconds: null
+tags: []
+class: functional
+category: boundary
+redteam: null
+executable: false
+skip_reason: >-
+  invalid scenario: Criterion 2: the regex is not an explicit, reliable absence check for a
+  multiline response and therefore cannot establish that config.py content is not exposed.
+excluded: false
+origin: generated
+sources:
+  - backend\app\services\nemoclaw_retriever.py

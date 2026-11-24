@@ -1,0 +1,49 @@
+local_id: SC-020
+title: Local filesystem retrieval persists audit artifact and creates GROUNDS edge in graph services
+feature_id: F-001
+feature_revision_id: sha256:8fbf144f4613352a2c927df96b74e482d54e4efa1fcc3ecfe62f5f41b0d100b5
+goal: >-
+  {"capability": "local_fs_read", "target": "/allowed/doc.txt", "project_id": "proj-123",
+  "thought_id": "thought-456"}
+input_kind: text
+acceptance_criteria:
+  - statement: Response verdict is ALLOWED and includes retrieval artifact content capped at 1200 characters.
+    check: json_path
+    params:
+      path: $.verdict
+      pattern: ALLOWED
+  - statement: GraphBackend service is called to persist the retrieval artifact and audit entry record.
+    check: mcp_probe
+    params:
+      path: GraphBackend
+  - statement: >-
+      GraphScienceService is called via link_with_hexactine_invariant to establish GROUNDS graph
+      relationship for supplied project_id and thought_id.
+    check: mcp_probe
+    params:
+      path: GraphScienceService
+forbidden: []
+why: ''
+confidence: null
+verification_requires: []
+attachments: []
+preconditions: []
+output_kind: null
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: null
+timeout_seconds: null
+tags: []
+class: functional
+category: integration
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

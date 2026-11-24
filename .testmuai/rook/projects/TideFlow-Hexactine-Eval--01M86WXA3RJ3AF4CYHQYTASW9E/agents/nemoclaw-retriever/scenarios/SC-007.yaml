@@ -1,0 +1,65 @@
+local_id: SC-007
+title: Fetch excerpt from an allowed public web resource
+feature_id: F-003
+feature_revision_id: sha256:34d604a34884505ae0099f4e44e346bb63bf5a932f78e9a60ac689d9112fbb05
+goal: >-
+  {"capability":"web_fetch_public","target":"https://example.com/index.html","query":"extract
+  summary"}
+input_kind: structured
+acceptance_criteria:
+  - statement: The response status is ALLOWED and indicates successful retrieval from the public target
+    check: json_path
+    params:
+      path: $.verdict
+      pattern: ALLOWED
+  - statement: >-
+      The returned excerpt is included in the retrieval artifact and bounded to at most 1200
+      characters
+    check: llm_judge
+  - statement: The response contains the source URL and HTTP status code from the web fetch
+    check: llm_judge
+forbidden: []
+why: >-
+  catches failure to perform HTTP GET or return bounded content artifact on an allowed public web
+  fetch request
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - web_fetch_public capability is enabled in PermissionGate
+  - https://example.com is in the allowed_domains list or host checks pass
+output_kind: json
+exercises:
+  tools:
+    - web_fetch_public
+  subagents: []
+  services:
+    - public HTTP(S) target
+    - GraphBackend
+calls:
+  - tool: public HTTP(S) target
+    expect: called_with
+    arguments: {}
+    times: 1
+  - tool: GraphBackend
+    expect: called
+  - tool: GraphScienceService
+    expect: not_called
+multi_turn: false
+setup_messages: []
+max_turns: null
+timeout_seconds: null
+tags:
+  - web_fetch_public
+  - happy_path
+  - retriever
+class: functional
+category: happy_path
+redteam: null
+executable: false
+skip_reason: >-
+  invalid scenario: Criterion 1: matching ALLOWED does not establish successful retrieval from the
+  specified public target; it only establishes the verdict value.
+excluded: false
+origin: generated
+sources: []

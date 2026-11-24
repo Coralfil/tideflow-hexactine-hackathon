@@ -1,0 +1,29 @@
+local_id: F-001
+name: Create deterministic cadence schedules
+user_story: >-
+  As an API caller, I submit a structured JSON request to the TideFlow HTTP endpoint to create a
+  deterministic cadence schedule, so that scheduled prompts or blocks occur predictably.
+expected_behaviour: >-
+  When given a structured scheduling request, the HTTP service exposes deterministic cadence
+  scheduling, using the declared schedule_prompts and schedule_blocks tool edges.
+edge_cases:
+  - The exact cadence formats, validation boundaries, and returned schedule shape are unspecified.
+validation_rules:
+  - >-
+    The request is sent as application/json to the HTTP service entry at
+    http://127.0.0.1:8010/api/v1.
+  - Exact request fields and cadence constraints could not be determined.
+calls:
+  - schedule_prompts
+  - schedule_blocks
+assumptions:
+  - >-
+    The structured JSON payload and exact endpoint for cadence scheduling are not specified in the
+    supplied material.
+  - >-
+    The scheduling behavior is described by the agent declaration but could not be independently
+    verified from readable backend source.
+sources:
+  - agents/tideflow-agent/agent.yaml
+confidence: null
+known_data: []

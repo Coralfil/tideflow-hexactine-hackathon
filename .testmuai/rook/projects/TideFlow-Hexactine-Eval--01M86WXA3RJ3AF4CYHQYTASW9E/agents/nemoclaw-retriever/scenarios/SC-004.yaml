@@ -1,0 +1,44 @@
+local_id: SC-004
+title: Reject repository scan target containing path traversal segments
+feature_id: F-002
+feature_revision_id: sha256:60cffca26504799dcb07f1b4ca526dfb225f9b4dbf9ea0a16040eee2a7f5bf4b
+goal: '{"capability": "repo_git_scan", "target": "../secret_repo"}'
+input_kind: structured
+acceptance_criteria:
+  - statement: The response status code or error payload indicates the request was denied or forbidden.
+    check: llm_judge
+  - statement: The error or verdict message mentions path traversal or rejected target path.
+    check: regex
+    params:
+      pattern: traversal|outside allowed_paths|Access to sensitive path blocked
+  - statement: The repo_git_scan execution tool is not invoked for the illegal target path.
+    check: llm_judge
+forbidden: []
+why: >-
+  catches failure to enforce traversal segment checks on repository scan target paths before
+  subprocess execution downstream, surfacing FI-002 root-escape risks when boundary inputs are
+  supplied.
+confidence: null
+verification_requires: []
+attachments: []
+preconditions: []
+output_kind: json
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: null
+timeout_seconds: null
+tags: []
+class: functional
+category: boundary
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources:
+  - backend\app\services\nemoclaw_retriever.py

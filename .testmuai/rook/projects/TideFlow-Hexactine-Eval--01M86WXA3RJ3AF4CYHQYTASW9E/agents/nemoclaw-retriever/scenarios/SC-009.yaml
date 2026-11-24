@@ -1,0 +1,42 @@
+local_id: SC-009
+title: Public web fetch rejects target attempting HTTP redirect
+feature_id: F-003
+feature_revision_id: sha256:34d604a34884505ae0099f4e44e346bb63bf5a932f78e9a60ac689d9112fbb05
+goal: '{"capability": "web_fetch_public", "target": "https://example.com/redirect-to-internal"}'
+input_kind: structured
+acceptance_criteria:
+  - statement: The request is rejected due to HTTP redirect policy enforcement
+    check: llm_judge
+  - statement: The service does not follow the HTTP redirect to the destination URL
+    check: llm_judge
+  - statement: An audit entry reflecting denial or execution error is created
+    check: llm_judge
+forbidden: []
+why: catches failure to block HTTP redirects, preventing redirect-based SSRF bypass attempts
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - web_fetch_public capability is enabled in PermissionGate
+  - example.com/redirect-to-internal returns an HTTP 301/302 redirect response
+output_kind: json
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls:
+  - tool: public HTTP(S) target
+    expect: called
+multi_turn: false
+setup_messages: []
+max_turns: null
+timeout_seconds: null
+tags: []
+class: functional
+category: boundary
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

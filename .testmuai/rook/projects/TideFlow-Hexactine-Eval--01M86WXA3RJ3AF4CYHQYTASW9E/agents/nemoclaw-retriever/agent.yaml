@@ -1,0 +1,170 @@
+local_id: nemoclaw-retriever
+name: Nemoclaw Retriever
+declared:
+  description: >-
+    Permission-gated Nemoclaw Retriever that authorizes bounded filesystem, repository, public-web,
+    and local-LLM retrieval, persists audit decisions and retrieval artifacts, and optionally
+    grounds artifacts in graph memory.
+  name: Nemoclaw Retriever
+source:
+  kind: codebase
+  tracks:
+    - README.md
+    - backend/app/config.py
+    - backend/app/graph/backend.py
+    - backend/app/graph/science.py
+    - backend/app/main.py
+    - backend/app/models/schemas.py
+    - backend/app/routers/retriever.py
+    - backend/app/services/local_worker_client.py
+    - backend/app/services/nemoclaw_retriever.py
+    - backend/tests/test_retriever_gate.py
+    - requirements/tideflow_prd.md
+  subtree_digest: 1eeb201bb2813c04f281ca8d67f9624822519a42a1f518b9b7f81606d248a034
+framework:
+  evidence: >-
+    backend/app/routers/retriever.py imports FastAPI/APIRouter and
+    backend/app/services/nemoclaw_retriever.py implements the dispatcher directly; no supported
+    agent SDK or agent-graph framework is identified.
+  name: custom
+interface:
+  accepts:
+    - >-
+      RetrieverExecuteRequest containing capability, target, optional query, optional project_id,
+      and optional thought_id
+    - >-
+      RetrieverPermissionsUpdateRequest containing optional capability toggles, allowed_paths, and
+      allowed_domains
+  entry: POST /api/v1/retriever/execute
+  intake: structured
+  out_of_scope:
+    - Capabilities other than local_fs_read, repo_git_scan, web_fetch_public, and local_llm_ollama
+  produces: >-
+    RetrieverExecuteResponse with an ALLOWED verdict, RetrievalArtifact, AuditEntry, and optional
+    grounded edge; denied, missing, or failed executions become HTTP 403, 404, or 502 responses.
+  transport: http
+limits: {}
+calls:
+  - to: GraphBackend
+    kind: database
+    write: true
+    via: get_node, query_nodes, upsert_node, get_edges
+    when: >-
+      always during service initialization for audit loading; during execution when validating
+      grounding or persisting an artifact and audit decision
+    returns: >-
+      Existing AuditEntry nodes, Project/Thought nodes, persisted RetrievalArtifact and AuditEntry
+      nodes, and graph edge data.
+    source: backend/app/services/nemoclaw_retriever.py:299-337, 373-380, 535-675
+    passes:
+      - project_id and thought_id for grounding validation
+      - audit entry properties
+      - retrieval artifact properties
+    blocking: true
+  - to: GraphScienceService
+    kind: service
+    write: true
+    via: link_with_hexactine_invariant
+    when: a project_id or thought_id is supplied for grounding
+    returns: Created or routed graph edge, routed flag, and optional subhub ID.
+    source: backend/app/services/nemoclaw_retriever.py:619-643
+    passes:
+      - artifact ID
+      - GROUNDS relationship type
+      - project and/or thought node IDs
+      - edge properties
+    blocking: true
+  - to: local_fs_read
+    kind: tool
+    write: false
+    via: _run_local_fs_read
+    when: capability is local_fs_read and PermissionGate authorizes the target
+    returns: A bounded summary, first 1200 characters of file text, and source reference.
+    source: backend/app/services/nemoclaw_retriever.py:385-397, 554-566
+    passes:
+      - Authorized resolved file path
+    blocking: true
+  - to: repo_git_scan
+    kind: tool
+    write: false
+    via: subprocess.run invoking git status/log
+    when: capability is repo_git_scan and PermissionGate authorizes the target
+    returns: Git status and recent commit output, or a bounded directory listing when git commands fail.
+    source: backend/app/services/nemoclaw_retriever.py:399-438, 568-580
+    passes:
+      - Authorized repository or directory path
+    blocking: true
+  - to: public HTTP(S) target
+    kind: service
+    write: false
+    via: httpx.AsyncClient.get
+    when: >-
+      capability is web_fetch_public and the URL passes scheme, hostname, DNS, and domain-allowlist
+      checks
+    returns: HTTP status, response text excerpt capped at 1200 characters, and source URL.
+    source: backend/app/services/nemoclaw_retriever.py:440-458
+    passes:
+      - Authorized HTTP(S) URL
+    blocking: true
+  - to: settings.local_ollama_url + /api/generate
+    kind: service
+    write: false
+    via: httpx.AsyncClient.post
+    when: >-
+      capability is local_llm_ollama and local worker inference is enabled or a mock transport is
+      injected
+    returns: A validated generated response or proceeds to the local worker fallback.
+    source: backend/app/services/nemoclaw_retriever.py:480-521
+    passes:
+      - Synthesis prompt from query or target
+      - Configured Ollama model
+    blocking: true
+  - to: settings.local_worker_chat_url + /chat/completions
+    kind: service
+    write: false
+    via: httpx.AsyncClient.post
+    when: >-
+      local_llm_ollama is authorized, the Ollama response is unavailable or invalid, and local
+      worker inference is enabled or mocked
+    returns: A validated chat-completion response or deterministic fallback synthesis.
+    source: backend/app/services/nemoclaw_retriever.py:480-521; backend/app/config.py:96-103
+    passes:
+      - Synthesis prompt
+      - qwen2.5-7b-instruct model name
+    blocking: true
+guardrails:
+  - Capabilities are default-deny and must be individually enabled in PermissionGate.
+  - Unknown capabilities are rejected.
+  - >-
+    Filesystem and repository targets must stay within configured allowed_paths, must not contain
+    null bytes or traversal segments, and must not resolve to detected sensitive paths such as .git,
+    .env, secrets, private-key filenames, or private-key suffixes.
+  - >-
+    Public web targets require HTTP or HTTPS, reject local, metadata, private, loopback, link-local,
+    multicast, reserved, and unspecified hosts, verify DNS resolution, and optionally require an
+    allowed domain.
+  - HTTP redirects are rejected to prevent redirect-based SSRF bypass.
+  - local_llm_ollama rejects file:// and null-byte target patterns.
+  - >-
+    Request schemas reject unknown fields and enforce nonblank, length-bounded capability and target
+    values.
+  - >-
+    Invalid or denied execution attempts are recorded as DENIED audit entries when they reach the
+    service's denial paths.
+assumptions:
+  - >-
+    Whether the FastAPI process is externally reachable or protected by an upstream authentication
+    layer is not established in the backend code.
+  - >-
+    The side-effect behavior of arbitrary public HTTP GET targets and local HTTP POST services is
+    not established, so those call write flags are omitted.
+  - >-
+    The runtime graph persistence mode may be in-process, Relate, or Neo4j depending on
+    configuration; the concrete deployment mode is not established here.
+  - >-
+    The repository-root README and requirements document could not be read from the agent-scoped
+    workspace, so this description relies on the backend implementation, schemas, router,
+    configuration, and tests.
+parent: null
+default_subagent: null
+approval_gates: []

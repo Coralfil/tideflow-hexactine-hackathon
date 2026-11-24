@@ -1,0 +1,44 @@
+local_id: F-004
+name: Synthesize using the local LLM retrieval capability
+user_story: >-
+  As a user, I submit the structured request {capability: "local_llm_ollama", target: <bounded
+  synthesis context>, query: <question or synthesis prompt>} so that I can obtain a locally
+  generated response without using a public model service.
+expected_behaviour: >-
+  For an authorized local_llm_ollama request, the service builds a synthesis prompt from query or
+  target, tries the configured Ollama generate endpoint, falls back to the local worker
+  chat-completions endpoint when needed, and ultimately may return deterministic fallback synthesis.
+  The result is validated, persisted as an artifact and audit decision, and optionally grounded in
+  graph memory.
+edge_cases:
+  - The Ollama response is used when valid.
+  - If Ollama is unavailable or invalid, the local worker is tried.
+  - >-
+    If both configured inference services are unavailable or invalid, deterministic offline
+    synthesis is returned.
+  - The response exposes inference_source, but the capability remains named local_llm_ollama.
+  - The configured inference timeout defaults to two seconds.
+validation_rules:
+  - The capability must be enabled in PermissionGate.
+  - file:// and null-byte target patterns are rejected.
+  - Inference must be enabled or mocked for the configured services.
+  - The generated response must pass the service's response validation.
+calls:
+  - settings.local_ollama_url + /api/generate
+  - settings.local_worker_chat_url + /chat/completions
+  - GraphBackend
+  - GraphScienceService
+assumptions:
+  - Local inference is enabled or a mock transport is injected.
+  - The target is used as synthesis context rather than as a filesystem or URL resource.
+sources:
+  - backend/app/services/nemoclaw_retriever.py:480-531
+  - backend/app/services/nemoclaw_retriever.py:619-643
+  - backend/app/config.py:96-103
+known_data:
+  - local_llm_ollama
+  - /api/generate
+  - /chat/completions
+  - qwen2.5-7b-instruct
+  - 2 seconds
+confidence: null

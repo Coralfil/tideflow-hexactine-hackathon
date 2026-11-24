@@ -1,0 +1,43 @@
+local_id: F-005
+name: Deny unauthorized or unsafe retrieval requests
+user_story: >-
+  As a caller, I submit the structured request {capability: <disabled, unknown, or policy-violating
+  capability>, target: <unsafe or unauthorized target>} so that the retriever refuses access and
+  records the security decision.
+expected_behaviour: >-
+  The service refuses execution when a capability is unknown, disabled, or its target fails the
+  applicable filesystem, repository, web, or local-LLM guardrails. It records a DENIED audit entry
+  for denial paths and does not invoke the protected retrieval tool.
+edge_cases:
+  - Unknown capabilities are rejected.
+  - Denied attempts are recorded as DENIED audit entries when they reach service denial paths.
+  - >-
+    An HTTP denial is represented as 403; missing resources as 404 and failed executions as 502
+    according to the API contract.
+validation_rules:
+  - Capabilities are default-deny and must be individually enabled.
+  - Unknown capabilities are rejected.
+  - >-
+    Filesystem and repository targets must satisfy allowed_paths, traversal, null-byte, and
+    sensitive-path checks.
+  - Public web targets must satisfy scheme, DNS, public-host, and domain-allowlist checks.
+  - local_llm_ollama rejects file:// and null-byte target patterns.
+calls:
+  - GraphBackend
+assumptions:
+  - >-
+    The request reaches the service's denial path rather than being rejected earlier by request
+    parsing.
+  - The relevant capability is disabled or the target violates its policy.
+sources:
+  - backend/app/services/nemoclaw_retriever.py:151-207
+  - backend/app/services/nemoclaw_retriever.py:362-367
+  - backend/app/services/nemoclaw_retriever.py:535-580
+  - backend/app/routers/retriever.py
+  - backend/app/models/schemas.py
+known_data:
+  - DENIED
+  - '403'
+  - '404'
+  - '502'
+confidence: null

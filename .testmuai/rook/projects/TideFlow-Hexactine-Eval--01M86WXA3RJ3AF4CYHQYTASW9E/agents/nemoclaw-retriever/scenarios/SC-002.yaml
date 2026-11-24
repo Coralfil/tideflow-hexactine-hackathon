@@ -1,0 +1,50 @@
+local_id: SC-002
+title: 'Boundary test: Local file read output truncated at 1200 characters'
+feature_id: F-001
+feature_revision_id: sha256:8fbf144f4613352a2c927df96b74e482d54e4efa1fcc3ecfe62f5f41b0d100b5
+goal: '{"capability": "local_fs_read", "target": "backend/app/services/nemoclaw_retriever.py"}'
+input_kind: structured
+acceptance_criteria:
+  - statement: The response status verdict is ALLOWED and execution succeeds for an authorized file.
+    check: json_path
+    params:
+      path: $.verdict
+      pattern: ^ALLOWED$
+  - statement: The returned artifact content excerpt is capped at at most 1200 characters.
+    check: llm_judge
+  - statement: The response includes a non-null summary and source reference matching the requested file.
+    check: json_path
+    params:
+      path: $.artifact.source_ref
+forbidden: []
+why: >-
+  Catches regressions where large file reads bypass the 1200 character excerpt boundary cap and leak
+  excessive file data or cause unexpected memory exposure in execution output.
+confidence: null
+verification_requires: []
+attachments: []
+preconditions:
+  - local_fs_read capability is enabled in PermissionGate
+  - backend/app/services/nemoclaw_retriever.py exists and exceeds 1200 characters in length
+output_kind: json
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: null
+timeout_seconds: null
+tags: []
+class: functional
+category: boundary
+redteam: null
+executable: false
+skip_reason: >-
+  invalid scenario: Criterion 3: checking $.artifact.source_ref cannot establish that a non-null
+  summary is also present or that the source reference matches the requested file.
+excluded: false
+origin: generated
+sources:
+  - backend\app\services\nemoclaw_retriever.py

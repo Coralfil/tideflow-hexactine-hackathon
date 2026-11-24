@@ -1,0 +1,69 @@
+local_id: tideflow-hexactine-agent
+name: tideflow-agent
+declared:
+  description: >-
+    An HTTP-accessible TideFlow service exposing deterministic cadence scheduling and a default-deny
+    Nemoclaw retriever with permission and security controls.
+  name: TideFlow Hexactine Agent
+source:
+  kind: codebase
+  tracks:
+    - agents/tideflow-agent
+    - agents/tideflow-agent/agent.yaml
+    - agents/tideflow-agent/features/F-001.yaml
+    - agents/tideflow-agent/profiles/active
+    - agents/tideflow-agent/profiles/local-api.yaml
+    - agents/tideflow-agent/scenarios/SC-001.yaml
+    - agents/tideflow-agent/scripts/tideflow_hooks.mjs
+  subtree_digest: a4d78d3d5e2a54d941b8bc625f6769db451ff917aac2e0950050789ed8f4ea05
+interface:
+  accepts:
+    - application/json
+  entry: http://127.0.0.1:8010/api/v1
+  intake: structured
+  produces: application/json
+  transport: http
+limits: {}
+calls:
+  - to: schedule_prompts
+    kind: tool
+    write: false
+    source: agents/tideflow-agent/agent.yaml
+  - to: schedule_blocks
+    kind: tool
+    write: true
+    source: agents/tideflow-agent/agent.yaml
+  - to: retriever_execute
+    kind: tool
+    write: true
+    source: agents/tideflow-agent/agent.yaml
+  - to: retriever_permissions
+    kind: tool
+    write: false
+    source: agents/tideflow-agent/agent.yaml
+guardrails:
+  - All Nemoclaw capabilities default to false at startup.
+  - Disabled or restricted retriever execution returns HTTP 403 and records a DENIED audit entry.
+  - >-
+    Block path traversal, sensitive paths including .env, .git, and .testmuai/evidence, file://
+    schemes, and private or metadata SSRF IPs.
+  - Enforce the Hexactine degree <= 6 invariant on Project, SpiculeHub, and ConceptTag nodes.
+approval_gates:
+  - >-
+    PUT /api/v1/retriever/permissions requires an explicit operator toggle before POST
+    /api/v1/retriever/execute succeeds.
+assumptions:
+  - >-
+    The source paths named in agent.yaml under backend/app/services were not readable from the
+    supplied agent directory, so the implementation, framework, exact endpoint schemas, and
+    invalid-graph behavior could not be independently verified.
+  - >-
+    The metadata does not specify payloads, return shapes, branch conditions, or blocking behavior
+    for the four declared tool calls.
+  - >-
+    The profile declares multi_turn false. The lifecycle hook writes per-run session files, but that
+    is treated as test-harness state rather than persistent target-agent memory.
+  - No subagent delegation or MCP server declaration was found.
+parent: null
+framework: null
+default_subagent: null

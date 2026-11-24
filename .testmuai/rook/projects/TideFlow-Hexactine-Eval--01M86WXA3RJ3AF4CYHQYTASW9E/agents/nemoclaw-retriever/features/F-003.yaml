@@ -1,0 +1,40 @@
+local_id: F-003
+name: Fetch an allowed public web resource
+user_story: >-
+  As a researcher, I submit the structured request {capability: "web_fetch_public", target:
+  "https://<allowed-public-domain>/<path>", query?: <optional query>} so that I can retrieve a
+  bounded excerpt from a public web resource.
+expected_behaviour: >-
+  For an authorized public HTTP(S) URL, the service performs an HTTP GET and returns the HTTP
+  status, a response-text excerpt capped at 1200 characters, and the source URL, then persists the
+  artifact and audit decision. A failed permitted fetch can raise an execution error without
+  consistently producing a final audit decision.
+edge_cases:
+  - Non-HTTP(S) schemes are rejected.
+  - >-
+    Local, metadata, private, loopback, link-local, multicast, reserved, and unspecified hosts are
+    rejected.
+  - DNS resolution failure is rejected.
+  - HTTP redirects are rejected.
+  - The response body is materialized before its returned excerpt is capped at 1200 characters.
+validation_rules:
+  - The capability must be enabled in PermissionGate.
+  - The URL must use HTTP or HTTPS.
+  - The hostname must pass DNS, public-address, and optional allowed-domain checks.
+  - Redirects are rejected.
+calls:
+  - public HTTP(S) target
+  - GraphBackend
+  - GraphScienceService
+assumptions:
+  - The caller has enabled web_fetch_public.
+  - The requested host passes DNS and domain policy checks.
+sources:
+  - backend/app/services/nemoclaw_retriever.py:440-458
+  - backend/app/services/nemoclaw_retriever.py:535-675
+known_data:
+  - web_fetch_public
+  - HTTP
+  - HTTPS
+  - 1200 characters
+confidence: null

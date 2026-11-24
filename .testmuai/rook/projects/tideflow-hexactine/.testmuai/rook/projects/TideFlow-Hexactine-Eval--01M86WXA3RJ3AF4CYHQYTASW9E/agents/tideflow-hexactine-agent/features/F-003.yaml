@@ -1,0 +1,37 @@
+local_id: F-003
+name: Require explicit permission toggle before retriever execution
+user_story: >-
+  As an API caller, I submit a structured permission-toggle request and then a structured
+  retriever-execution request, so that retrieval is available only after the explicit permission
+  gate has been enabled.
+expected_behaviour: >-
+  A caller must explicitly toggle retriever permissions through PUT /api/v1/retriever/permissions
+  before POST /api/v1/retriever/execute can succeed.
+edge_cases:
+  - Retriever execution must not succeed before the explicit permission toggle.
+  - >-
+    The permission endpoint is described as a PUT mutation, although its declared call edge is
+    marked write:false.
+  - The supplied material does not establish authentication or authorization for the toggle.
+validation_rules:
+  - The permission toggle is required before retriever execution succeeds.
+  - The permission operation uses PUT /api/v1/retriever/permissions.
+  - Retriever execution uses POST /api/v1/retriever/execute.
+  - >-
+    The supplied material does not establish an authentication requirement despite the
+    operator-toggle wording.
+calls:
+  - retriever_permissions
+  - retriever_execute
+assumptions:
+  - The permission payload and exact capability names are unspecified.
+  - >-
+    The profile's unauthenticated configuration does not establish that an operator identity check
+    exists.
+sources:
+  - agents/tideflow-agent/agent.yaml
+  - agents/tideflow-agent/profiles/local-api.yaml
+known_data:
+  - PUT /api/v1/retriever/permissions
+  - POST /api/v1/retriever/execute
+confidence: null

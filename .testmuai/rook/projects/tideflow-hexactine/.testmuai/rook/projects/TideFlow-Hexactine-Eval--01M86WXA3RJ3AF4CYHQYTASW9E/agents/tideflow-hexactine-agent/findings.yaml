@@ -1,0 +1,19 @@
+- severity: high
+  what: >-
+    The retriever approval gate is exposed through a profile with auth: none, so the material does
+    not show any human or operator identity check around the permission toggle.
+  where: agents/tideflow-agent/agent.yaml; agents/tideflow-agent/profiles/local-api.yaml
+  why: >-
+    Any caller able to reach the local API may be able to enable retriever capabilities before
+    invoking the write-capable retriever_execute path; the stated human gate is therefore not
+    demonstrably enforced.
+  id: FI-001
+- severity: medium
+  what: >-
+    retriever_permissions is marked write:false even though the declared PUT
+    /api/v1/retriever/permissions toggle changes permission state.
+  where: agents/tideflow-agent/agent.yaml
+  why: >-
+    Rook may under-report the state-changing blast radius of tests that exercise the permission
+    endpoint.
+  id: FI-002

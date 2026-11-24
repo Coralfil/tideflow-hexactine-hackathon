@@ -1,0 +1,21 @@
+id: test-profile
+name: test_profile
+kind: rest
+target:
+  domain: 127.0.0.1:8010
+  endpoint: POST /api/v1/retriever/execute
+hooks:
+  prepare: null
+  open: null
+  execute:
+    script: scripts/test-profile.mjs
+    mode: rest
+    target:
+      domain: 127.0.0.1:8010
+      endpoint: POST /api/v1/retriever/execute
+    timeout_seconds: 600
+    delay_seconds: 0
+  close: null
+  collect: null
+env: []
+capabilities: {}

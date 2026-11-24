@@ -1,0 +1,46 @@
+local_id: SC-008
+title: Public web fetch response excerpt capped exactly at 1200 characters
+feature_id: F-003
+feature_revision_id: sha256:34d604a34884505ae0099f4e44e346bb63bf5a932f78e9a60ac689d9112fbb05
+goal: '{"capability": "web_fetch_public", "target": "https://example.com/large-page"}'
+input_kind: structured
+acceptance_criteria:
+  - statement: The response status is 200 or indicates success for an authorized web fetch execution
+    check: llm_judge
+  - statement: The returned text excerpt or content length does not exceed 1200 characters
+    check: llm_judge
+  - statement: The response includes the original source target URL
+    check: llm_judge
+forbidden: []
+why: >-
+  catches failure to enforce the 1200 character response excerpt truncation boundary on large web
+  responses (FI-004 boundary test)
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - web_fetch_public capability is enabled in PermissionGate
+  - example.com domain is allowed and resolves to a valid public IP
+output_kind: json
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls:
+  - tool: public HTTP(S) target
+    expect: called
+  - tool: GraphBackend
+    expect: called
+multi_turn: false
+setup_messages: []
+max_turns: null
+timeout_seconds: null
+tags: []
+class: functional
+category: boundary
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

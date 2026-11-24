@@ -1,0 +1,59 @@
+local_id: SC-013
+title: >-
+  Local LLM capability falls back to deterministic offline synthesis when both Ollama and local
+  worker are unreachable
+feature_id: F-004
+feature_revision_id: sha256:0a0199f14ade83d56736a276a41bff45347c7ee4674d31c91f26e87022bce981
+goal: >-
+  {"capability": "local_llm_ollama", "target": "System architecture overview", "query": "Explain
+  retriever graph grounding."}
+input_kind: structured
+acceptance_criteria:
+  - statement: The response text includes the expected deterministic offline synthesis fallback prompt prefix
+    check: regex
+    params:
+      pattern: Offline deterministic synthesis for 'System architecture overview'
+  - statement: The response artifact inference_source is explicitly set to deterministic_fallback
+    check: json_path
+    params:
+      path: $.artifact.inference_source
+      pattern: ^deterministic_fallback$
+  - statement: >-
+      The execution verdict is ALLOWED and an audit entry is created despite inference service
+      failures
+    check: json_path
+    params:
+      path: $.audit.verdict
+      pattern: ^ALLOWED$
+forbidden: []
+why: >-
+  Catches issues where total inference service unavailability prevents the retriever from returning
+  a valid deterministic fallback artifact or completing audit persistence.
+confidence: null
+verification_requires: []
+attachments: []
+preconditions: []
+output_kind: json
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: null
+timeout_seconds: null
+tags:
+  - integration
+  - local_llm
+  - offline_fallback
+  - audit
+class: functional
+category: integration
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources:
+  - backend\app\services\nemoclaw_retriever.py

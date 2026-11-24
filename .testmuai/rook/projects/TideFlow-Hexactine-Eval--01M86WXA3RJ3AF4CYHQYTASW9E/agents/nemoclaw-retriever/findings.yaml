@@ -1,0 +1,44 @@
+- severity: high
+  what: >-
+    The permissions update endpoint has no authentication or human approval gate in the visible
+    implementation.
+  where: backend/app/routers/retriever.py:40-45; backend/app/services/nemoclaw_retriever.py:362-367
+  why: >-
+    Any caller able to reach the API can enable filesystem, repository, web, or local-LLM
+    capabilities and change allowed paths or domains, undermining the default-deny boundary.
+  id: FI-001
+- severity: high
+  what: >-
+    Callers can redefine allowed_paths to a sensitive directory itself and thereby bypass the
+    relative-path sensitive-file check.
+  where: backend/app/services/nemoclaw_retriever.py:151-159, 174-207
+  why: >-
+    The sensitive check computes paths relative to each configured root; configuring a root such as
+    the repository's .git or secrets directory removes that sensitive ancestor from the relative
+    parts, allowing reads that the default root rejects.
+  id: FI-002
+- severity: medium
+  what: Failed allowed executions do not consistently create a final audit decision.
+  where: backend/app/services/nemoclaw_retriever.py:440-458, 568-580
+  why: >-
+    RetrieverExecutionError from a failed public fetch, and unexpected failures during
+    artifact/graph persistence, can escape without an audit entry even though the service presents
+    itself as audit-recording.
+  id: FI-003
+- severity: medium
+  what: The public fetch path has no response-size limit before materializing resp.text.
+  where: backend/app/services/nemoclaw_retriever.py:440-458
+  why: >-
+    A permitted public endpoint can return a very large body; the service only truncates after
+    loading it, creating avoidable memory and test-run resource exposure.
+  id: FI-004
+- severity: low
+  what: >-
+    The local_llm_ollama capability returns deterministic offline synthesis when both configured
+    inference services are unavailable or return invalid output.
+  where: backend/app/services/nemoclaw_retriever.py:480-531
+  why: >-
+    A caller may interpret an ALLOWED local-LLM result as model-generated even though the response
+    came from a deterministic fallback; the response does expose inference_source, but the
+    capability name remains potentially misleading.
+  id: FI-005

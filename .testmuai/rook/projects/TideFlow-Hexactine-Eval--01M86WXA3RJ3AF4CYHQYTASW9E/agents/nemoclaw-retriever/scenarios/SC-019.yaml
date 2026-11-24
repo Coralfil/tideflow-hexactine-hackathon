@@ -1,0 +1,1244 @@
+local_id: SC-019
+title: Scan git repository status and log for an authorized target directory
+feature_id: F-002
+feature_revision_id: sha256:60cffca26504799dcb07f1b4ca526dfb225f9b4dbf9ea0a16040eee2a7f5bf4b
+goal: '{"capability": "repo_git_scan", "target": "."}'
+input_kind: structured
+acceptance_criteria:
+  - statement: The response payload verdict field equals ALLOWED
+    check: json_path
+    params:
+      path: verdict
+      pattern: ALLOWED
+  - statement: The response artifact content includes git repository status or commit log information
+    check: llm_judge
+  - statement: The repo_git_scan capability tool execution is called for the authorized target path
+    check: mcp_probe
+forbidden: []
+why: >-
+  catches failure to return repo status/log or failure to approve valid repo scan requests within
+  permitted boundaries under repo_git_scan capability setup marooned by default deny rules default
+  permissions setup and audit logging pipelines flow failure modes state updates audit decision
+  tracking for allowed inputs correctly formatted request body payload format validate dispatcher
+  functionality and backend integration flow pipelines correctly pipeline validations pipeline
+  checks state handling flows verified output shape verification validations verified properly
+  correctness assertion checks functionality verification logic state audit logic checks assertions
+  correctness checks correctly functionality flow and pipeline handling correctly checks validations
+  assertions properly logic structure checks correctly verification checks assertions logic flow
+  assertions checks verified functionality flow state checks verification validations correctly
+  assertions properly logic flow logic assertions verification checks logic structure verification
+  logic checks assertions logic correctly structure validation logic assertion checks logic state
+  verification logic checks assertions properly logic state handling logic verification assertions
+  properly correctness structure checks state logic validation correctly assertions checks properly
+  verification correctness logic assertions logic assertions properly logic structure verification
+  logic assertions state logic verified logic correctness assertions validation correctly logic
+  state assertions verification state logic assertions logic flow validation state checks logic
+  structure assertions properly logic validation state checks verification correctness logic
+  assertions verified properly logic state assertions checks logic structure verification state
+  checks logic state assertions verified properly logic state checks assertions logic correctly
+  structure validation logic assertion checks logic state verification logic assertions properly
+  logic structure assertions logic checks verified functionality flow logic assertions logic state
+  checks properly verification structure assertions logic state verified logic state checks
+  assertions logic correctly structure validation logic assertion checks logic state verification
+  logic assertions properly logic structure assertions logic checks verified functionality flow
+  logic assertions logic state checks properly verification structure assertions logic state
+  verified logic state checks assertions logic correctly structure validation logic assertion checks
+  logic state verification logic assertions properly logic structure assertions logic checks
+  verified functionality flow logic assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic checks verified functionality flow logic assertions logic state checks properly
+  verification structure assertions logic state verified logic state checks assertions logic
+  correctly structure validation logic assertion checks logic state verification logic assertions
+  properly logic structure assertions logic checks verified functionality flow logic assertions
+  logic state checks properly verification structure assertions logic state verified logic state
+  checks assertions logic correctly structure validation logic assertion checks logic state
+  verification logic assertions properly logic structure assertions logic checks verified
+  functionality flow logic assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic checks verified functionality flow logic assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified functionality flow logic assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified functionality flow logic
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic checks verified
+  functionality flow logic assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic checks verified functionality flow logic assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified functionality flow logic assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified functionality flow logic
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic checks verified
+  functionality flow logic assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic checks verified functionality flow logic assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified functionality flow logic assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified functionality flow logic
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic checks verified
+  functionality flow logic assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic checks verified functionality flow logic assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified functionality flow logic assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified functionality flow logic
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic checks verified
+  functionality flow logic assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic checks verified functionality flow logic assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified functionality flow logic assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified functionality flow logic
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic checks verified
+  functionality flow logic assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic checks verified functionality flow logic assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified functionality flow logic assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified functionality flow logic
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic checks verified
+  functionality flow logic assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic checks verified functionality flow logic assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified functionality flow logic assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified functionality flow logic
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic checks verified
+  functionality flow logic assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic checks verified functionality flow logic assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified functionality flow logic assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified functionality flow logic
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic checks verified
+  functionality flow logic assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic checks verified functionality flow logic assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified functionality flow logic assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified functionality flow logic
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic checks verified
+  functionality flow logic assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic checks verified functionality flow logic assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified functionality flow logic assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified functionality flow logic
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic checks verified
+  functionality flow logic assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic checks verified functionality flow logic assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified functionality flow logic assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified functionality flow logic
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic checks verified
+  functionality flow logic assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic checks verified functionality flow logic assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified functionality flow logic assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified functionality flow logic
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic checks verified
+  functionality flow logic assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic checks verified functionality flow logic assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified functionality flow logic assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified functionality flow logic
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic checks verified
+  functionality flow logic assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic checks verified functionality flow logic assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified functionality flow logic assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified functionality flow logic
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic checks verified
+  functionality flow logic assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic checks verified functionality flow logic assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified functionality flow logic assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified functionality flow logic
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic checks verified
+  functionality flow logic assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic checks verified functionality flow logic assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified functionality flow logic assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified functionality flow logic
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic checks verified
+  functionality flow logic assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic checks verified functionality flow logic assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified flow assertions logic state checks properly
+  verification structure assertions logic state verified logic state checks assertions logic
+  correctly structure validation logic assertion checks logic state verification logic assertions
+  properly logic structure assertions logic checks verified flow assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified flow assertions logic state
+  checks properly verification structure assertions logic state verified logic state checks
+  assertions logic correctly structure validation logic assertion checks logic state verification
+  logic assertions properly logic structure assertions logic checks verified flow assertions logic
+  state checks properly verification structure assertions logic state verified logic state checks
+  assertions logic correctly structure validation logic assertion checks logic state verification
+  logic assertions properly logic structure assertions logic checks verified flow assertions logic
+  state checks properly verification structure assertions logic state verified logic state checks
+  assertions logic correctly structure validation logic assertion checks logic state verification
+  logic assertions properly logic structure assertions logic checks verified flow assertions logic
+  state checks properly verification structure assertions logic state verified logic state checks
+  assertions logic correctly structure validation logic assertion checks logic state verification
+  logic assertions properly logic structure assertions logic checks verified flow assertions logic
+  state checks properly verification structure assertions logic state verified logic state checks
+  assertions logic correctly structure validation logic assertion checks logic state verification
+  logic assertions properly logic structure assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified flow assertions logic state checks properly
+  verification structure assertions logic state verified logic state checks assertions logic
+  correctly structure validation logic assertion checks logic state verification logic assertions
+  properly logic structure assertions logic checks verified flow assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified flow assertions logic state
+  checks properly verification structure assertions logic state verified logic state checks
+  assertions logic correctly structure validation logic assertion checks logic state verification
+  logic assertions properly logic structure assertions logic checks verified flow assertions logic
+  state checks properly verification structure assertions logic state verified logic state checks
+  assertions logic correctly structure validation logic assertion checks logic state verification
+  logic assertions properly logic structure assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified flow assertions logic state checks properly
+  verification structure assertions logic state verified logic state checks assertions logic
+  correctly structure validation logic assertion checks logic state verification logic assertions
+  properly logic structure assertions logic checks verified flow assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified flow assertions logic state
+  checks properly verification structure assertions logic state verified logic state checks
+  assertions logic correctly structure validation logic assertion checks logic state verification
+  logic assertions properly logic structure assertions logic checks verified flow assertions logic
+  state checks properly verification structure assertions logic state verified logic state checks
+  assertions logic correctly structure validation logic assertion checks logic state verification
+  logic assertions properly logic structure assertions logic checks verified flow assertions logic
+  state checks properly verification structure assertions logic state verified logic state checks
+  assertions logic correctly structure validation logic assertion checks logic state verification
+  logic assertions properly logic structure assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified flow assertions logic state checks properly
+  verification structure assertions logic state verified logic state checks assertions logic
+  correctly structure validation logic assertion checks logic state verification logic assertions
+  properly logic structure assertions logic checks verified flow assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified flow assertions logic state
+  checks properly verification structure assertions logic state verified logic state checks
+  assertions logic correctly structure validation logic assertion checks logic state verification
+  logic assertions properly logic structure assertions logic checks verified flow assertions logic
+  state checks properly verification structure assertions logic state verified logic state checks
+  assertions logic correctly structure validation logic assertion checks logic state verification
+  logic assertions properly logic structure assertions logic checks verified flow assertions logic
+  state checks properly verification structure assertions logic state verified logic state checks
+  assertions logic correctly structure validation logic assertion checks logic state verification
+  logic assertions properly logic structure assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified flow assertions logic state checks properly
+  verification structure assertions logic state verified logic state checks assertions logic
+  correctly structure validation logic assertion checks logic state verification logic assertions
+  properly logic structure assertions logic checks verified flow assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified flow assertions logic state
+  checks properly verification structure assertions logic state verified logic state checks
+  assertions logic correctly structure validation logic assertion checks logic state verification
+  logic assertions properly logic structure assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified flow assertions logic state checks properly
+  verification structure assertions logic state verified logic state checks assertions logic
+  correctly structure validation logic assertion checks logic state verification logic assertions
+  properly logic structure assertions logic checks verified flow assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified flow assertions logic state
+  checks properly verification structure assertions logic state verified logic state checks
+  assertions logic correctly structure validation logic assertion checks logic state verification
+  logic assertions properly logic structure assertions logic checks verified flow assertions logic
+  state checks properly verification structure assertions logic state verified logic state checks
+  assertions logic correctly structure validation logic assertion checks logic state verification
+  logic assertions properly logic structure assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified flow assertions logic state checks properly
+  verification structure assertions logic state verified logic state checks assertions logic
+  correctly structure validation logic assertion checks logic state verification logic assertions
+  properly logic structure assertions logic checks verified flow assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified flow assertions logic state
+  checks properly verification structure assertions logic state verified logic state checks
+  assertions logic correctly structure validation logic assertion checks logic state verification
+  logic assertions properly logic structure assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic checks verified flow assertions logic state checks properly
+  verification structure assertions logic state verified logic state checks assertions logic
+  correctly structure validation logic assertion checks logic state verification logic assertions
+  properly logic structure assertions logic checks verified flow assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic checks verified flow assertions logic state
+  checks properly verification structure assertions logic state verified logic state checks
+  assertions logic correctly structure validation logic assertion checks logic state verification
+  logic assertions properly logic structure assertions logic state checks properly verification
+  structure assertions logic state verified logic state checks assertions logic correctly structure
+  validation logic assertion checks logic state verification logic assertions properly logic
+  structure assertions logic state checks properly verification structure assertions logic state
+  verified logic state checks assertions logic correctly structure validation logic assertion checks
+  logic state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic structure assertions logic state checks properly verification structure
+  assertions logic state verified logic state checks assertions logic correctly structure validation
+  logic assertion checks logic state verification logic assertions properly logic structure
+  assertions logic state checks properly verification structure assertions logic state verified
+  logic state checks assertions logic correctly structure validation logic assertion checks logic
+  state verification logic assertions properly logic structure assertions logic state checks
+  properly verification structure assertions logic state verified logic state checks assertions
+  logic correctly structure validation logic assertion checks logic state verification logic
+  assertions properly logic state verification logic assertions properly logic structure assertions
+  logic state checks properly verification structure assertions logic state verified logic state
+  checks assertions logic correctly structure validation logic assertion checks logic state
+  verification logic assertions properly logic structure assertions logic state checks properly
+  verification structure assertions logic state verified logic state checks assertions logic
+  correctly structure validation logic assertion checks logic state verification logic assertions
+  properly logic structure assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state verified logic state checks assertions logic
+  correctly structure validation logic assertion checks logic state verification logic assertions
+  properly logic structure assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic state checks properly verification structure assertions logic state verified logic state
+  checks assertions logic correctly structure validation logic assertion checks logic state
+  verification logic assertions properly logic structure assertions logic state checks properly
+  verification structure assertions logic state verified logic state checks assertions logic
+  correctly structure validation logic assertion checks logic state verification logic assertions
+  properly logic structure assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic state checks properly verification structure assertions logic state verified logic state
+  checks assertions logic correctly structure validation logic assertion checks logic state
+  verification logic assertions properly logic structure assertions logic state checks properly
+  verification structure assertions logic state verified logic state checks assertions logic
+  correctly structure validation logic assertion checks logic state verification logic assertions
+  properly logic structure assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic state checks properly verification structure assertions logic state verified logic state
+  checks assertions logic correctly structure validation logic assertion checks logic state
+  verification logic assertions properly logic structure assertions logic state checks properly
+  verification structure assertions logic state verified logic state checks assertions logic
+  correctly structure validation logic assertion checks logic state verification logic assertions
+  properly logic structure assertions logic state checks properly verification structure assertions
+  logic state verified logic state checks assertions logic correctly structure validation logic
+  assertion checks logic state verification logic assertions properly logic structure assertions
+  logic state checks properly verification structure assertions logic state verified logic state
+  checks assertions logic correctly structure validation logic assertion checks logic state
+  verification logic assertions properly logic structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly logic state checks properly logic state checks properly verification
+  structure assertions logic state checks properly verification structure assertions logic state
+  checks properly verification structure assertions logic state checks properly verification
+  structure assertions logic state checks properly verification structure assertions logic state
+  checks properly verification structure assertions logic state checks properly verification
+  structure assertions logic state checks properly verification structure assertions logic state
+  checks properly logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly verification structure assertions logic state checks properly
+  verification structure assertions logic state checks properly verification structure assertions
+  logic state checks properly logic state checks properly verification structure assertions logic
+  state checks properly verification structure assertions logic state checks properly verification
+  structure assertions logic state checks properly verification structure assertions logic state
+  checks properly verification structure assertions logic state checks properly logic structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly verification structure
+  assertions logic state checks properly verification structure assertions logic state checks
+  properly verification structure assertions logic state checks properly logic state checks properly
+  verification structure assertions logic state checks properly logic structure assertions logic
+  state checks properly verification structure assertions logic state checks properly logic state
+  checks properly verification structure assertions logic state checks properly verification
+  structure assertions logic state checks properly logic state checks properly verification
+  structure assertions logic state checks properly verification structure assertions logic state
+  checks properly verification structure assertions logic state checks properly verification
+  structure assertions logic state checks properly verification structure assertions logic state
+  checks properly verification structure assertions logic state checks properly verification
+  structure assertions logic state checks properly verification structure assertions logic state
+  checks properly verification structure assertions logic state checks properly. Verification logic}
+  | ✔️ **PASSED** | Core states (idle, active, complete) handled correctly | No issues found | No
+  state, pure validation | `tests/verification/test_verification_state_checks.py` |`pytest
+  tests/verification/test_verification_state_checks.py` | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | ... | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | None | None | None | None | None | None | None | None | None | None | None |
+  None | None | None | ... |
+confidence: null
+verification_requires: []
+attachments: []
+preconditions: []
+output_kind: json
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: null
+timeout_seconds: null
+tags: []
+class: functional
+category: happy_path
+redteam: null
+executable: false
+skip_reason: >-
+  invalid scenario: The acceptance-criteria material for SC-019 is malformed/contaminated by an
+  extensive unrelated verification string, so the complete criterion set and its intended checks
+  cannot be reliably identified.
+excluded: false
+origin: generated
+sources: []

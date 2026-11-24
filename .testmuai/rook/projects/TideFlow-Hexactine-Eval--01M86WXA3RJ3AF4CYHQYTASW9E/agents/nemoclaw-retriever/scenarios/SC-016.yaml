@@ -1,0 +1,55 @@
+local_id: SC-016
+title: Refuse retrieval request when requested capability is disabled
+feature_id: F-005
+feature_revision_id: sha256:ac27d949f9f403728d389a984ce7114d561930d9ec559e98e9765aa0351c84b7
+goal: '{"capability": "local_fs_read", "target": "/allowed/sample.txt"}'
+input_kind: structured
+acceptance_criteria:
+  - statement: >-
+      The response or error payload clearly indicates access denial or HTTP 403 status for disabled
+      capability
+    check: regex
+    params:
+      pattern: (denied|403|forbidden|disabled|not permitted)
+  - statement: The response does not return file contents or a success verdict
+    check: llm_judge
+  - statement: An audit entry or log reflects a DENIED verdict or refusal for the request
+    check: regex
+    params:
+      pattern: DENIED
+forbidden:
+  - ALLOWED
+why: >-
+  Catches default-deny boundary failure where disabled capabilities are executed without prior
+  permission update.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - The capability local_fs_read is disabled in the PermissionGate configuration.
+output_kind: json
+exercises:
+  tools:
+    - local_fs_read
+  subagents: []
+  services: []
+calls:
+  - tool: local_fs_read
+    expect: not_called
+multi_turn: false
+setup_messages: []
+max_turns: null
+timeout_seconds: null
+tags:
+  - security
+  - permission-gate
+  - default-deny
+  - F-005
+class: functional
+category: negative
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

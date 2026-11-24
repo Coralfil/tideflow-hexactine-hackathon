@@ -1,0 +1,1 @@
+curl -s -X POST http://127.0.0.1:8010/api/v1/retriever/execute -H "Content-Type: application/json" -d '{"capability":"local_fs_read","target":"{{goal}}"}'

@@ -1,0 +1,37 @@
+local_id: F-004
+name: Block unsafe retriever paths and SSRF targets
+user_story: >-
+  As an API caller, I submit a structured retriever request containing a path or URL, so that
+  traversal, sensitive-file access, local-file schemes, and private or metadata SSRF targets cannot
+  be retrieved.
+expected_behaviour: >-
+  Nemoclaw retriever execution rejects requests targeting path traversal, sensitive paths, file://
+  URLs, or private or metadata SSRF IP addresses.
+edge_cases:
+  - Path traversal attempts are blocked.
+  - Access to .env is blocked.
+  - Access to .git is blocked.
+  - Access to .testmuai/evidence is blocked.
+  - file:// schemes are blocked.
+  - Private IP SSRF targets are blocked.
+  - Metadata IP SSRF targets are blocked.
+validation_rules:
+  - Path traversal must be blocked.
+  - The sensitive paths .env, .git, and .testmuai/evidence must be blocked.
+  - file:// schemes must be blocked.
+  - Private and metadata SSRF IPs must be blocked.
+calls:
+  - retriever_execute
+assumptions:
+  - The exact retriever request field containing a path, URL, or target is unspecified.
+  - >-
+    The service's precise response for each blocked input is not stated beyond the general retriever
+    denial behavior.
+sources:
+  - agents/tideflow-agent/agent.yaml
+known_data:
+  - .env
+  - .git
+  - .testmuai/evidence
+  - file://
+confidence: null

@@ -1,0 +1,43 @@
+local_id: SC-010
+title: Public web fetch rejects internal loopback and private IP targets
+feature_id: F-003
+feature_revision_id: sha256:34d604a34884505ae0099f4e44e346bb63bf5a932f78e9a60ac689d9112fbb05
+goal: '{"capability": "web_fetch_public", "target": "http://127.0.0.1:8080/admin"}'
+input_kind: structured
+acceptance_criteria:
+  - statement: The execution is denied or raises a 403 Forbidden / validation error response
+    check: llm_judge
+  - statement: No outbound HTTP request is dispatched to the target loopback address
+    check: llm_judge
+  - statement: A DENIED audit decision is recorded for the blocked target attempt
+    check: llm_judge
+forbidden: []
+why: >-
+  catches failure to enforce boundary checks against private, local, loopback, or reserved network
+  addresses
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - web_fetch_public capability is enabled in PermissionGate
+output_kind: json
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls:
+  - tool: public HTTP(S) target
+    expect: not_called
+multi_turn: false
+setup_messages: []
+max_turns: null
+timeout_seconds: null
+tags: []
+class: functional
+category: boundary
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

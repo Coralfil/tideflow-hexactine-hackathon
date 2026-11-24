@@ -1,0 +1,39 @@
+local_id: F-002
+name: Scan an authorized repository
+user_story: >-
+  As a repository operator, I submit the structured request {capability: "repo_git_scan", target:
+  <authorized repository or directory path>, query?: <optional query>} so that I can inspect
+  repository status and recent commits.
+expected_behaviour: >-
+  For an authorized repo_git_scan request, the service runs git status and recent git log collection
+  and returns their output; if git commands fail, it returns a bounded directory listing. It
+  persists the artifact and audit decision and can ground the artifact in graph memory when
+  project_id or thought_id is supplied.
+edge_cases:
+  - Git command failure produces a bounded directory listing instead of git output.
+  - Sensitive paths, traversal segments, and null-byte targets are rejected.
+  - The git subprocess has a five-second timeout.
+validation_rules:
+  - The capability must be enabled in PermissionGate.
+  - >-
+    The target must be inside configured allowed_paths and must not contain null bytes or traversal
+    segments.
+  - Detected sensitive paths are denied.
+  - The git subprocess is bounded by a five-second timeout.
+calls:
+  - repo_git_scan
+  - GraphBackend
+  - GraphScienceService
+assumptions:
+  - The caller has enabled repo_git_scan and supplied a target within configured allowed_paths.
+  - The target is a repository or directory.
+sources:
+  - backend/app/services/nemoclaw_retriever.py:151-207
+  - backend/app/services/nemoclaw_retriever.py:399-438
+  - backend/app/services/nemoclaw_retriever.py:568-580
+  - backend/app/services/nemoclaw_retriever.py:535-675
+known_data:
+  - repo_git_scan
+  - 5 seconds
+  - GROUNDS
+confidence: null

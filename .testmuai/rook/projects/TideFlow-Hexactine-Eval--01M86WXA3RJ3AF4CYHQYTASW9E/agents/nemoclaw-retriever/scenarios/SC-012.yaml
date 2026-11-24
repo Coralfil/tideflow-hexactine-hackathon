@@ -1,0 +1,60 @@
+local_id: SC-012
+title: >-
+  Local LLM capability falls back from primary Ollama to local worker chat completions when Ollama
+  fails
+feature_id: F-004
+feature_revision_id: sha256:0a0199f14ade83d56736a276a41bff45347c7ee4674d31c91f26e87022bce981
+goal: >-
+  {"capability": "local_llm_ollama", "target": "Summarize project scope", "query": "Provide a
+  high-level overview of project milestones."}
+input_kind: structured
+acceptance_criteria:
+  - statement: >-
+      The response summary confirms local worker chat completion synthesis occurred when Ollama
+      failed
+    check: regex
+    params:
+      pattern: Synthesized local worker chat response
+  - statement: The response artifact indicates local_worker as the inference_source
+    check: json_path
+    params:
+      path: $.artifact.inference_source
+      pattern: ^local_worker$
+  - statement: The agent attempted a POST request to the local worker chat completions endpoint
+    check: mcp_probe
+forbidden: []
+why: >-
+  Catches failures where primary LLM endpoint downtime crashes the retriever instead of seamlessly
+  falling back to the configured secondary local worker chat completion service.
+confidence: null
+verification_requires: []
+attachments: []
+preconditions: []
+output_kind: json
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: null
+timeout_seconds: null
+tags:
+  - integration
+  - local_llm
+  - fallback
+  - ollama
+  - local_worker
+class: functional
+category: integration
+redteam: null
+executable: false
+skip_reason: >-
+  invalid scenario: Criterion 3: mcp_probe is required, but the supplied post-run evidence lists
+  transcript, output, and artifacts only; no retained tool/network metadata is guaranteed by the
+  contract to prove the POST attempt.
+excluded: false
+origin: generated
+sources:
+  - backend\app\services\nemoclaw_retriever.py

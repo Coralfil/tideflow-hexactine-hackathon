@@ -1,0 +1,39 @@
+local_id: F-005
+name: Enforce Hexactine node degree limit
+user_story: >-
+  As an API caller, I submit a structured graph-related request involving Project, SpiculeHub, or
+  ConceptTag nodes, so that the resulting graph never violates the Hexactine degree limit.
+expected_behaviour: >-
+  The service enforces the Hexactine degree <= 6 invariant on Project, SpiculeHub, and ConceptTag
+  nodes during the relevant structured operation.
+edge_cases:
+  - >-
+    A Project node with degree greater than 6 must be rejected or otherwise prevented from violating
+    the invariant.
+  - >-
+    A SpiculeHub node with degree greater than 6 must be rejected or otherwise prevented from
+    violating the invariant.
+  - >-
+    A ConceptTag node with degree greater than 6 must be rejected or otherwise prevented from
+    violating the invariant.
+  - The behavior for degree exactly 6 and for invalid graphs beyond the invariant is not specified.
+validation_rules:
+  - Project nodes must satisfy degree <= 6.
+  - SpiculeHub nodes must satisfy degree <= 6.
+  - ConceptTag nodes must satisfy degree <= 6.
+  - The exact rejection status and response for an invalid graph are unspecified.
+calls:
+  - retriever_execute
+assumptions:
+  - The graph payload schema and exact invalid-graph response are unspecified.
+  - >-
+    The degree invariant applies when Project, SpiculeHub, or ConceptTag nodes are supplied to the
+    relevant graph operation.
+sources:
+  - agents/tideflow-agent/agent.yaml
+known_data:
+  - degree <= 6
+  - Project
+  - SpiculeHub
+  - ConceptTag
+confidence: null

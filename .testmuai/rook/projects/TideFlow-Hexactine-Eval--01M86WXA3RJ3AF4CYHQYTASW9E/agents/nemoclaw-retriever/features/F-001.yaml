@@ -1,0 +1,41 @@
+local_id: F-001
+name: Read an authorized local filesystem target
+user_story: >-
+  As a caller, I submit the structured request {capability: "local_fs_read", target: <authorized
+  filesystem path>, query?: <optional query>, project_id?: <optional project>, thought_id?:
+  <optional thought>} so that I can retrieve bounded local file content with an audit record.
+expected_behaviour: >-
+  For a structured POST /api/v1/retriever/execute request with capability local_fs_read and an
+  authorized filesystem target, the service reads the file, returns a bounded summary, the first
+  1200 characters, and a source reference, then persists the retrieval artifact and audit decision.
+  If project_id or thought_id is supplied, it validates grounding and may create a GROUNDS graph
+  edge.
+edge_cases:
+  - >-
+    Files containing sensitive path components such as .git, .env, secrets, private-key filenames,
+    or private-key suffixes are denied.
+  - Targets containing null bytes or traversal segments are denied.
+  - The returned file text is capped at 1200 characters.
+validation_rules:
+  - The capability must be individually enabled; capabilities are default-deny.
+  - The target must remain within configured allowed_paths.
+  - Request fields must be known, and capability and target must be nonblank and length-bounded.
+calls:
+  - local_fs_read
+  - GraphBackend
+  - GraphScienceService
+assumptions:
+  - >-
+    The caller has enabled the capability and supplied a target permitted by the configured
+    PermissionGate.
+  - Graph persistence and audit loading are available during execution.
+sources:
+  - backend/app/services/nemoclaw_retriever.py:151-207
+  - backend/app/services/nemoclaw_retriever.py:385-397
+  - backend/app/services/nemoclaw_retriever.py:535-675
+  - backend/app/schemas.py
+known_data:
+  - local_fs_read
+  - 1200 characters
+  - GROUNDS
+confidence: null

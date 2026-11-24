@@ -1,0 +1,27 @@
+local_id: F-002
+name: Deny disabled or restricted retriever execution
+user_story: >-
+  As an API caller, I submit a structured JSON request to execute a Nemoclaw retrieval while the
+  capability is disabled or restricted, so that unauthorized retrieval is refused and auditable.
+expected_behaviour: >-
+  A structured request attempting Nemoclaw retriever execution is rejected with HTTP 403 when the
+  relevant capability is disabled or restricted, and the service records a DENIED audit entry.
+edge_cases:
+  - Execution while capabilities are disabled is denied.
+  - Execution while capabilities are restricted is denied.
+  - A denied execution records a DENIED audit entry.
+validation_rules:
+  - All Nemoclaw capabilities default to false at startup.
+  - Disabled or restricted retriever execution must return HTTP 403.
+  - A DENIED audit entry must be recorded.
+calls:
+  - retriever_execute
+assumptions:
+  - The retriever execute request schema and exact permission-state representation are unspecified.
+  - The service starts with all Nemoclaw capabilities disabled.
+sources:
+  - agents/tideflow-agent/agent.yaml
+known_data:
+  - HTTP 403
+  - DENIED
+confidence: null

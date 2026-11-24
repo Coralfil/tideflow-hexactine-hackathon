@@ -1,0 +1,45 @@
+local_id: SC-005
+title: Return directory listing fallback when scanning a directory without git repository metadata
+feature_id: F-002
+feature_revision_id: sha256:60cffca26504799dcb07f1b4ca526dfb225f9b4dbf9ea0a16040eee2a7f5bf4b
+goal: '{"capability": "repo_git_scan", "target": "."}'
+input_kind: structured
+acceptance_criteria:
+  - statement: The execution verdict is ALLOWED and returns a valid RetrievalArtifact payload.
+    check: llm_judge
+  - statement: >-
+      The artifact excerpt or response output provides git status/log or falls back to a directory
+      listing.
+    check: regex
+    params:
+      pattern: 'Git status:|Directory listing:'
+  - statement: The response includes an audit decision or summary reflecting the repository scan result.
+    check: llm_judge
+forbidden: []
+why: >-
+  catches failure of repo_git_scan to gracefully return directory listing fallback when git
+  status/log commands fail on a bounded directory.
+confidence: null
+verification_requires: []
+attachments: []
+preconditions: []
+output_kind: json
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: null
+timeout_seconds: null
+tags: []
+class: functional
+category: boundary
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources:
+  - backend\app\services\nemoclaw_retriever.py

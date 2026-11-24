@@ -1,0 +1,59 @@
+local_id: SC-014
+title: Reject local_llm_ollama request containing file:// target pattern
+feature_id: F-004
+feature_revision_id: sha256:0a0199f14ade83d56736a276a41bff45347c7ee4674d31c91f26e87022bce981
+goal: >-
+  {"capability": "local_llm_ollama", "target": "file:///etc/passwd", "query": "Summarize this
+  context"}
+input_kind: structured
+acceptance_criteria:
+  - statement: The response status code is 403 Forbidden or the response JSON contains a denial verdict
+    check: regex
+    params:
+      pattern: (403|DENIED|denied|forbidden|invalid target)
+  - statement: The response body indicates target validation failure for prohibited file URI patterns
+    check: llm_judge
+  - statement: >-
+      The response does not return synthetic LLM output or generated completions from local worker
+      services
+    check: llm_judge
+forbidden:
+  - root:x:0:0
+  - ALLOWED
+why: >-
+  Catches failure to enforce target validation rules rejecting file:// target patterns in local LLM
+  synthesis requests.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - PermissionGate has local_llm_ollama capability enabled
+output_kind: json
+exercises:
+  tools:
+    - local_llm_ollama
+  subagents: []
+  services:
+    - PermissionGate
+calls:
+  - tool: settings.local_ollama_url + /api/generate
+    expect: not_called
+  - tool: settings.local_worker_chat_url + /chat/completions
+    expect: not_called
+multi_turn: false
+setup_messages: []
+max_turns: null
+timeout_seconds: null
+tags:
+  - negative
+  - validation
+  - local_llm_ollama
+  - ssrf-guard
+class: functional
+category: negative
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

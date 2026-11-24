@@ -1,0 +1,50 @@
+local_id: SC-006
+title: >-
+  Execute git scan on authorized directory with graph grounding and verify git subprocess execution
+  and persistence
+feature_id: F-002
+feature_revision_id: sha256:60cffca26504799dcb07f1b4ca526dfb225f9b4dbf9ea0a16040eee2a7f5bf4b
+goal: '{"capability": "repo_git_scan", "target": ".", "project_id": "proj-001"}'
+input_kind: structured
+acceptance_criteria:
+  - statement: The response status code is 200 and the execution verdict is ALLOWED
+    check: json_path
+    params:
+      path: verdict
+      pattern: ^ALLOWED$
+  - statement: >-
+      The artifact payload contains git status and recent commit information or directory listing
+      excerpt
+    check: llm_judge
+  - statement: The repo_git_scan subprocess call was executed and graph persistence occurred
+    check: llm_judge
+forbidden: []
+why: >-
+  Catches failures in running subprocess git commands or in linking artifact grounding edges to
+  GraphBackend/GraphScienceService during scan execution.
+confidence: null
+verification_requires: []
+attachments: []
+preconditions: []
+output_kind: json
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: null
+timeout_seconds: null
+tags: []
+class: functional
+category: integration
+redteam: null
+executable: false
+skip_reason: >-
+  invalid scenario: Criterion 1: the JSON-path check tests only verdict ALLOWED and cannot establish
+  the separately stated HTTP status code 200.
+excluded: false
+origin: generated
+sources:
+  - backend\app\services\nemoclaw_retriever.py

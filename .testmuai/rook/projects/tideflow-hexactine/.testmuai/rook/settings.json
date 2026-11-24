@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "selections": {
+    "prod": {
+      "project_id": "01M86WXA3RJ3AF4CYHQYTASW9E",
+      "env": "prod"
+    }
+  }
+}

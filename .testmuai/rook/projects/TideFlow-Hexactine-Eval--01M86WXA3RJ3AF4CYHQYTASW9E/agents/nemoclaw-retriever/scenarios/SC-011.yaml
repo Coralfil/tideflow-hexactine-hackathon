@@ -1,0 +1,60 @@
+local_id: SC-011
+title: Execute permitted public web retrieval and persist graph artifact and audit record
+feature_id: F-003
+feature_revision_id: sha256:34d604a34884505ae0099f4e44e346bb63bf5a932f78e9a60ac689d9112fbb05
+goal: >-
+  {"capability":"web_fetch_public","target":"https://example.com/index.html","query":"extract
+  summary"}
+input_kind: structured
+acceptance_criteria:
+  - statement: The response status indicator or verdict is ALLOWED.
+    check: json_path
+    params:
+      path: verdict
+      pattern: ALLOWED
+  - statement: The returned retrieval artifact contains the target URL as its source reference.
+    check: json_path
+    params:
+      path: artifact.source_ref
+      pattern: https://example.com/index.html
+  - statement: The HTTP response excerpt does not exceed 1200 characters.
+    check: llm_judge
+forbidden: []
+why: >-
+  Catches failures where public web retrieval succeeds over HTTP but fails to persist the resulting
+  RetrievalArtifact or AuditEntry to GraphBackend.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - web_fetch_public capability is enabled in PermissionGate
+  - Target domain is reachable and permitted by domain allowlist policy
+output_kind: json
+exercises:
+  tools:
+    - web_fetch_public
+  subagents: []
+  services:
+    - public HTTP(S) target
+calls:
+  - tool: public HTTP(S) target
+    expect: called
+  - tool: GraphBackend
+    expect: called
+multi_turn: false
+setup_messages: []
+max_turns: null
+timeout_seconds: null
+tags:
+  - integration
+  - web_fetch_public
+  - graph_persistence
+class: functional
+category: integration
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources:
+  - backend\app\services\nemoclaw_retriever.py
