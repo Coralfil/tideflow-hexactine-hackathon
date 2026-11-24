@@ -12,7 +12,7 @@ from typing import Any
 import httpx
 
 from app.config import Settings
-from app.models.schemas import InferenceSource, ThoughtClassification, ThoughtKind
+from app.models.schemas import InferenceSource, ThoughtClassification, ThoughtKind, AgentOffloadAnalysis
 
 EMBEDDING_DIM = 384
 
@@ -394,7 +394,10 @@ class LocalWorkerClient:
             "Classify this ADD thought into JSON with keys "
             "kind (one of: spark_idea, project_task, side_quest, blocker), "
             "energy_cost (integer 1..5), concept_tags (array of 1..3 lowercase slugs), "
-            "suggested_micro_step (short string). Respond ONLY with JSON.\n"
+            "suggested_micro_step (short string). "
+            "Also include an agent_analysis JSON object with fields: "
+            "usability, difficulty, workload, compatibility, net_benefit, can_offload (boolean), go_nogo_report (string). "
+            "Respond ONLY with JSON.\n"
             f"Text: {text}"
         )
 
@@ -513,12 +516,29 @@ class LocalWorkerClient:
             if not micro or is_stub_or_invalid_llm_output(micro):
                 fallback = self._deterministic_classify(text, explicit_kind=kind)
                 micro = fallback.suggested_micro_step
+            agent_analysis: AgentOffloadAnalysis | None = None
+            raw_analysis = parsed.get("agent_analysis")
+            if isinstance(raw_analysis, dict):
+                try:
+                    agent_analysis = AgentOffloadAnalysis(
+                        usability=str(raw_analysis.get("usability", "")),
+                        difficulty=str(raw_analysis.get("difficulty", "")),
+                        workload=str(raw_analysis.get("workload", "")),
+                        compatibility=str(raw_analysis.get("compatibility", "")),
+                        net_benefit=str(raw_analysis.get("net_benefit", "")),
+                        can_offload=bool(raw_analysis.get("can_offload", False)),
+                        go_nogo_report=str(raw_analysis.get("go_nogo_report", "")),
+                    )
+                except Exception:
+                    pass
+
             return ThoughtClassification(
                 kind=kind,
                 energy_cost=energy,
                 concept_tags=tags,
                 suggested_micro_step=micro,
                 inference_source=source,
+                agent_analysis=agent_analysis,
             )
 
         # Optional semantic concept enrichment via :8001/rerank when online

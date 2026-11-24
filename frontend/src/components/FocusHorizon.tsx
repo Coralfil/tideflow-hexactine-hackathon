@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Anchor, ArrowUpRight, Bookmark, ChevronDown, ChevronRight, Compass, Layers, Calendar, CalendarSync } from 'lucide-react';
+import { Anchor, ArrowUpRight, Bookmark, ChevronDown, ChevronRight, Compass, Layers, Calendar, CalendarSync, Bot } from 'lucide-react';
 import { HyperfixationTimer } from './HyperfixationTimer';
+import { AgentTaskSheetModal } from './AgentTaskSheetModal';
 import type {
   MomentumResumeResponse,
   ProjectView,
@@ -41,6 +42,7 @@ export const FocusHorizon: React.FC<FocusHorizonProps> = ({
   const [nextMicroStep, setNextMicroStep] = useState('');
   const [busyAction, setBusyAction] = useState<string | null>(null);
   const [localError, setLocalError] = useState<string | null>(null);
+  const [activeTaskForAgent, setActiveTaskForAgent] = useState<ThoughtView | null>(null);
 
   const nowItems = (triage?.now?.length ? triage.now : thoughts.filter((t) => t.status === 'now')).slice(0, 1);
   const nextItems = (triage?.next?.length ? triage.next : thoughts.filter((t) => t.status === 'next')).slice(0, 2);
@@ -73,6 +75,32 @@ export const FocusHorizon: React.FC<FocusHorizonProps> = ({
       setLocalError(err instanceof Error ? err.message : 'Unable to save breadcrumb.');
     } finally {
       setBusyAction(null);
+    }
+  };
+
+  const renderAgentAnalysis = (item: ThoughtView) => {
+    if (!item.agent_analysis) return null;
+    
+    if (item.agent_analysis.can_offload) {
+      return (
+        <div style={{ marginTop: '8px', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '8px' }}>
+          <button
+            type="button"
+            className="btn btn-sm btn-primary"
+            style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+            onClick={() => setActiveTaskForAgent(item)}
+          >
+            <Bot size={14} style={{ marginRight: '6px' }} />
+            Submit to agent for completion
+          </button>
+        </div>
+      );
+    } else {
+      return (
+        <div style={{ marginTop: '8px', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '8px', fontSize: '0.75rem', color: '#94a3b8' }}>
+          <strong>Go/NoGo Report:</strong> {item.agent_analysis.go_nogo_report}
+        </div>
+      );
     }
   };
 
@@ -185,6 +213,7 @@ export const FocusHorizon: React.FC<FocusHorizonProps> = ({
                 </div>
                 {/* Hyperfixation Boundaries for Active Focus */}
                 <HyperfixationTimer taskId={item.id} taskText={item.text} energyCost={item.energy_cost} />
+                {renderAgentAnalysis(item)}
               </motion.div>
             ))
           )}
@@ -232,6 +261,7 @@ export const FocusHorizon: React.FC<FocusHorizonProps> = ({
                 </div>
                 {/* Hyperfixation Boundaries for Active Focus */}
                 <HyperfixationTimer taskId={item.id} taskText={item.text} energyCost={item.energy_cost} />
+                {renderAgentAnalysis(item)}
               </motion.div>
             ))
           )}
@@ -272,6 +302,7 @@ export const FocusHorizon: React.FC<FocusHorizonProps> = ({
                     <span className="pill">{item.kind}</span>
                     <span>E{item.energy_cost}</span>
                   </div>
+                  {renderAgentAnalysis(item)}
                 </div>
               ))
             )}
@@ -348,6 +379,26 @@ export const FocusHorizon: React.FC<FocusHorizonProps> = ({
       </div>
 
       {localError && <div className="alert-banner alert-error">{localError}</div>}
+
+      {activeTaskForAgent && (
+        <AgentTaskSheetModal
+          thought={activeTaskForAgent}
+          onClose={() => setActiveTaskForAgent(null)}
+          onSubmit={async (instructions) => {
+            // Placeholder: Typically this would call an API to offload the task
+            // For the hackathon, we simulate it being passed to the subagent
+            console.log("Submitting to agent with instructions:", instructions, "Task:", activeTaskForAgent);
+            setLocalError(null);
+            try {
+              // Mark it as done or handled, etc.
+              // We could just park it with a special reason or call a new endpoint
+              alert("Task submitted to OrchestraPlan worker!\n\nInstructions: " + instructions);
+            } catch (err) {
+              throw err;
+            }
+          }}
+        />
+      )}
     </section>
   );
 };

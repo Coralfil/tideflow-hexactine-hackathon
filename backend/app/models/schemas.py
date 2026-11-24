@@ -97,12 +97,23 @@ class ProjectView(BaseModel):
     updated_at: str
 
 
+class AgentOffloadAnalysis(BaseModel):
+    usability: str
+    difficulty: str
+    workload: str
+    compatibility: str
+    net_benefit: str
+    can_offload: bool
+    go_nogo_report: str
+
+
 class ThoughtClassification(BaseModel):
     kind: ThoughtKind
     energy_cost: int = Field(default=2, ge=1, le=5)
     concept_tags: list[str] = Field(default_factory=list)
     suggested_micro_step: str
     inference_source: InferenceSource = "deterministic_fallback"
+    agent_analysis: AgentOffloadAnalysis | None = None
 
 
 class ThoughtCaptureRequest(BaseModel):
@@ -134,6 +145,7 @@ class ThoughtView(BaseModel):
     concept_tags: list[str] = Field(default_factory=list)
     suggested_micro_step: str
     inference_source: InferenceSource = "deterministic_fallback"
+    agent_analysis: AgentOffloadAnalysis | None = None
     park_reason: str | None = None
     routed_via_subhub: bool = False
     subhub_id: str | None = None

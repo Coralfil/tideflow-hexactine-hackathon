@@ -91,6 +91,7 @@ class MomentumEngine:
             created_at=str(props.get("created_at") or ""),
             updated_at=str(props.get("updated_at") or ""),
             parked_at=props.get("parked_at"),
+            agent_analysis=props.get("agent_analysis"),
         )
 
     def _node_to_breadcrumb(self, node: dict) -> BreadcrumbView:
@@ -250,6 +251,11 @@ class MomentumEngine:
             park_reason = None
 
         thought_id = f"th_{uuid4().hex[:8]}"
+        
+        agent_analysis_data = None
+        if classification.agent_analysis:
+            agent_analysis_data = classification.agent_analysis.model_dump()
+
         self.backend.upsert_node(
             "Thought",
             {
@@ -262,6 +268,7 @@ class MomentumEngine:
                 "concept_tags": classification.concept_tags,
                 "suggested_micro_step": classification.suggested_micro_step,
                 "inference_source": classification.inference_source,
+                "agent_analysis": agent_analysis_data,
                 "park_reason": park_reason,
                 "routed_via_subhub": False,
                 "subhub_id": None,

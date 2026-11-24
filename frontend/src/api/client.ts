@@ -35,6 +35,16 @@ export interface ProjectView {
   updated_at: string;
 }
 
+export interface AgentOffloadAnalysis {
+  usability: string;
+  difficulty: string;
+  workload: string;
+  compatibility: string;
+  net_benefit: string;
+  can_offload: boolean;
+  go_nogo_report: string;
+}
+
 export interface ThoughtView {
   id: string;
   text: string;
@@ -51,6 +61,7 @@ export interface ThoughtView {
   created_at: string;
   updated_at: string;
   parked_at: string | null;
+  agent_analysis?: AgentOffloadAnalysis;
 }
 
 export interface ThoughtCaptureResponse {
