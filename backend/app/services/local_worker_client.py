@@ -14,6 +14,29 @@ import httpx
 from app.config import Settings
 from app.models.schemas import InferenceSource, ThoughtClassification, ThoughtKind, AgentOffloadAnalysis
 
+_PORTABLE_LLM = None
+_PORTABLE_LLM_LOADED = False
+
+def get_portable_llm():
+    global _PORTABLE_LLM, _PORTABLE_LLM_LOADED
+    if _PORTABLE_LLM_LOADED:
+        return _PORTABLE_LLM
+    _PORTABLE_LLM_LOADED = True
+    try:
+        from pathlib import Path
+        model_path = Path(__file__).resolve().parent.parent.parent.parent / ".models" / "qwen2.5-0.5b-instruct-q4_k_m.gguf"
+        if model_path.exists():
+            from llama_cpp import Llama
+            _PORTABLE_LLM = Llama(
+                model_path=str(model_path),
+                n_ctx=2048,
+                n_gpu_layers=0,  # CPU portable mode
+                verbose=False
+            )
+    except Exception:
+        pass
+    return _PORTABLE_LLM
+
 EMBEDDING_DIM = 384
 
 _BLOCKER_KEYWORDS = (
@@ -401,6 +424,32 @@ class LocalWorkerClient:
             f"Text: {text}"
         )
 
+        # 0. Try embedded portable llama.cpp model
+        portable_llm = get_portable_llm()
+        if portable_llm is not None:
+            try:
+                def _run_portable():
+                    return portable_llm(
+                        f"<|im_start|>system\nYou are an AI orchestrator. Respond ONLY with valid JSON.<|im_end|>\n<|im_start|>user\n{prompt}<|im_end|>\n<|im_start|>assistant\n",
+                        max_tokens=300,
+                        stop=["<|im_end|>"],
+                        temperature=0.0
+                    )
+                
+                res = await asyncio.to_thread(_run_portable)
+                raw = res["choices"][0]["text"].strip()
+                if not is_stub_or_invalid_llm_output(raw):
+                    parsed = json.loads(_strip_markdown_fences(raw))
+                    if isinstance(parsed, dict) and parsed.get("kind") in {
+                        "spark_idea",
+                        "project_task",
+                        "side_quest",
+                        "blocker",
+                    }:
+                        return parsed, "local_worker"
+            except Exception as e:
+                pass
+
         # 1. Try local Ollama if reachable
         try:
             async with httpx.AsyncClient(
@@ -586,6 +635,26 @@ class LocalWorkerClient:
             f"Next step: {next_micro_step}\n"
             f"Linked sparks: {sparks_text}"
         )
+
+        # 0. Try embedded portable llama.cpp model
+        portable_llm = get_portable_llm()
+        if portable_llm is not None:
+            try:
+                def _run_portable_resume():
+                    return portable_llm(
+                        f"<|im_start|>system\nYou are an AI orchestrator. Respond ONLY with valid JSON.<|im_end|>\n<|im_start|>user\n{prompt}<|im_end|>\n<|im_start|>assistant\n",
+                        max_tokens=180,
+                        stop=["<|im_end|>"],
+                        temperature=0.0
+                    )
+                
+                res = await asyncio.to_thread(_run_portable_resume)
+                raw = res["choices"][0]["text"].strip()
+                parsed_lines = _parse_resume_card_lines(raw)
+                if parsed_lines is not None:
+                    return parsed_lines
+            except Exception:
+                pass
 
         # 1. Try Ollama /api/generate
         try:
