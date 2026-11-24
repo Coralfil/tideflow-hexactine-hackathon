@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Anchor, ArrowUpRight, Bookmark, ChevronDown, ChevronRight, Compass, Layers, Calendar, CalendarSync } from 'lucide-react';
+import { HyperfixationTimer } from './HyperfixationTimer';
 import type {
   MomentumResumeResponse,
   ProjectView,
@@ -182,6 +183,8 @@ export const FocusHorizon: React.FC<FocusHorizonProps> = ({
                     </button>
                   </div>
                 </div>
+                {/* Hyperfixation Boundaries for Active Focus */}
+                <HyperfixationTimer taskId={item.id} taskText={item.text} energyCost={item.energy_cost} />
               </motion.div>
             ))
           )}
@@ -227,6 +230,8 @@ export const FocusHorizon: React.FC<FocusHorizonProps> = ({
                     </button>
                   </div>
                 </div>
+                {/* Hyperfixation Boundaries for Active Focus */}
+                <HyperfixationTimer taskId={item.id} taskText={item.text} energyCost={item.energy_cost} />
               </motion.div>
             ))
           )}
